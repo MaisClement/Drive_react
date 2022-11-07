@@ -1,0 +1,32 @@
+/* --- Fluent BTN --- */
+
+.small_fluent_btn {
+  border-radius: 10px;
+  cursor: pointer;
+  border: 2px solid #4f474e00;
+  display: inline-block;
+  width: 39px;
+}
+
+.small_fluent_btn:active {
+  margin-top: 1px;
+}
+
+.small_fluent_btn span {
+  margin-left: 10px;
+  position: relative;
+  top: -10px;
+}
+
+.small_fluent_btn img {
+  max-width: 30px;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
+.small_fluent_btn:hover,
+.small_fluent_btn:active,
+.small_fluent_btn:focus {
+  background-color: #0000000a;
+  border: 2px solid #4f474e61;
+}
