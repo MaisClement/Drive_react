@@ -32,8 +32,9 @@ class App extends React.Component {
     super();
 
     this.state = {
-      url: "/",
-      
+      path: "",
+      tree: [],
+      files: [],
     }
   }
 
