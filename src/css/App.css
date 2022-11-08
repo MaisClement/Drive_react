@@ -6,10 +6,12 @@
   border: 2px solid #4f474e00;
   display: inline-block;
   width: 39px;
+  margin-bottom: 1px;
 }
 
 .small_fluent_btn:active {
   margin-top: 1px;
+  margin-bottom: 0;
 }
 
 .small_fluent_btn span {
@@ -29,4 +31,43 @@
 .small_fluent_btn:focus {
   background-color: #0000000a;
   border: 2px solid #4f474e61;
+}
+
+/* --- Path --- */
+
+.path {
+  border-radius: 10px;
+  cursor: pointer;
+  border: 2px solid #4f474e00;
+  display: inline-block;
+  width: 39px;
+}
+
+.path:active {
+  margin-top: 1px;
+}
+
+.path:hover,
+.path:active,
+.path:focus {
+  background-color: #0000000a;
+  border: 2px solid #4f474e61;
+}
+
+/* --- Path --- */
+
+.nav .small_fluent_btn {
+  width: 50px;
+}
+
+/* --- --- */
+
+.explorer-space {
+  border: 1px solid #820282;
+}
+
+/* --- --- */
+
+.is-hidden {
+  opacity: 0;
 }

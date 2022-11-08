@@ -54,18 +54,89 @@ hr {
   border-bottom: 2px solid var(--secondary);
 }
 
-
-
 .options {
   margin: 10px;
   margin-right: 0px;
 }
+
+.nav {
+  display: flex;
+}
+
 .path {
   height: 39px;
   display: flex;
   align-items: center;
   margin-left: 10px;
+  padding: 0 10px;
+  width: 100%;
   width: -moz-available;
-  width: -webkit-fill-available !important;
-  width: fill-available !important;
+  /* For Mozzila */
+  width: -webkit-fill-available;
+  /* For Chrome */
+  width: stretch;
+  /* Unprefixed */
+}
+
+.files {
+  padding: 20px;
+}
+
+.files img {
+  width: 25px;
+}
+
+.files th {
+  text-align: left;
+}
+
+td:first-child {
+  width: 40px;
+}
+
+
+.files table{
+  width: 100%;
+  border: 0;
+  border-collapse: collapse;
+}
+
+.files tbody tr {
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 12px 0 0 0;
+  border: 2px solid var(--transparent);
+  color: #868686;
+  overflow: hidden;
+  font-size: 15px;
+  word-wrap: anywhere;
+  transition: color 500ms;
+}
+
+.files tbody tr:active {
+  margin-top: 1px;
+}
+
+.files tbody tr span {
+  margin-left: 10px;
+  position: relative;
+  top: -7px;
+}
+
+@media (prefers-color-scheme: light) {
+  .files tbody tr:hover {
+    border: 2px solid var(--border-color);
+    background-color: var(--el-back-hover);
+    color: #000;
+    transition: color 500ms;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .files tbody tr:hover {
+    border: 2px solid var(--border-color);
+    background-color: var(--el-back-hover);
+    color: #fff;
+    transition: color 500ms;
+  }
 }

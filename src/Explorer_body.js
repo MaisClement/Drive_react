@@ -1,3 +1,8 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Files_table from './Files_table';
+import { useParams, Link, Router, BrowserRouter } from "react-router-dom";
+
 import 'split-pane-react/esm/themes/default.css'
 import './css/App.css';
 import './css/Header.css';
@@ -9,7 +14,32 @@ import upload from './img/upload.svg';
 import back from './img/back.svg';
 import right from './img/right.svg';
 
-function ExplorerBody() {
+function Path(props) {
+  const path = props.path.split('/');
+  return (
+    <div className="path">
+      <Link to={"/"} className="path-link">
+        Accueil
+      </Link>
+      {
+        props.path !== "/" && props.path !== ""
+          ? <>
+            {path.map((p, i) => (
+              <>
+                <span className="path-space">{'>'}</span>
+                <Link to={props.path.substring(0, props.path.indexOf(p) + p.length + 1)} className="path-link">
+                  {p}
+                </Link>
+              </>
+            ))}
+          </>
+          : null
+      }
+    </div>
+  );
+}
+
+function ExplorerBody(props) {
   return (
     <section>
 
@@ -23,7 +53,7 @@ function ExplorerBody() {
         </div>
       </div>
 
-      <div>
+      <div className='nav'>
         <div className="small_fluent_btn">
           <img className="svg" src={back} />
         </div>
@@ -34,16 +64,22 @@ function ExplorerBody() {
           <img className="svg" src={update} />
         </div>
 
-        <div className="small_fluent_btn path">
-          <a className="path-link">Accueil</a>
-        </div>
+        <Path
+          path={props.path}
+        />
+      </div>
 
+      <div className="explorer-space"></div>
+      <i className={props.isLoading ? 'loader-4' : 'loader-4 is-hidden'}></i>
+
+      <div className='files'>
+        <Files_table
+          files={props.files}
+        />
       </div>
 
     </section>
-
   );
 };
 
 export default ExplorerBody;
-

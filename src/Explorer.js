@@ -6,17 +6,12 @@ import 'split-pane-react/esm/themes/default.css'
 import './css/App.css';
 import './css/Header.css';
 
-function Explorer() {
+function Explorer(props) {
   const [sizes, setSizes] = useState([
     100,
     '30%',
     'auto',
   ]);
-
-  const layoutCSS = {
-    height: '100%',
-    display: 'flex',
-  };
 
   return (
     <div className='explorer'>
@@ -29,7 +24,11 @@ function Explorer() {
           <ExplorerPane />
         </Pane>
 
-        <ExplorerBody />
+        <ExplorerBody
+          path = {props.path}
+          files = {props.files}
+          isLoading = {props.isLoading}
+        />
       </SplitPane>
     </div>
   );
