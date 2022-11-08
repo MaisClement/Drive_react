@@ -102,6 +102,7 @@ class Drive extends React.Component {
         <Explorer
           path={this.state.path}
           files={this.state.files}
+          tree={this.state.tree}
           isLoading={this.state.isLoading}
         />
       </div>

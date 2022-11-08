@@ -21,13 +21,15 @@ function Explorer(props) {
         onChange={setSizes}
       >
         <Pane minSize={50} maxSize='50%'>
-          <ExplorerPane />
+          <ExplorerPane
+            tree={props.tree}
+          />
         </Pane>
 
         <ExplorerBody
-          path = {props.path}
-          files = {props.files}
-          isLoading = {props.isLoading}
+          path={props.path}
+          files={props.files}
+          isLoading={props.isLoading}
         />
       </SplitPane>
     </div>
