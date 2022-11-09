@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { useTable } from 'react-table';
+import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
+import { useTable, useSortBy, useRowSelect } from 'react-table'
+import { Link, useNavigate } from "react-router-dom";
 
-function timeConverter(timestamp){
+function timeConverter(timestamp) {
   var a = new Date(timestamp * 1000);
-  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var year = a.getFullYear() < 10 ? '0' + a.getFullYear() : a.getFullYear();
   var month = months[a.getMonth()];
   var date = a.getDate() < 10 ? '0' + a.getDate() : a.getDate();
@@ -14,37 +16,56 @@ function timeConverter(timestamp){
   return time;
 }
 
-function sizeFormat(bytes){ 
+function sizeFormat(bytes) {
   const kb = 1024;
   const mb = kb * 1024;
   const gb = mb * 1024;
   const tb = gb * 1024;
 
-  if (bytes == null){
+  if (bytes == null) {
     return '';
 
   } else if ((bytes >= 0) && (bytes < kb)) {
-      return `${bytes} o`;
-  
+    return `${bytes} o`;
+
   } else if ((bytes >= kb) && (bytes < mb)) {
-      return `${Math.round(bytes / kb)} Ko`;
-  
+    return `${Math.round(bytes / kb)} Ko`;
+
   } else if ((bytes >= mb) && (bytes < gb)) {
-      return `${Math.round(bytes / mb)} Mo`;
+    return `${Math.round(bytes / mb)} Mo`;
 
   } else if ((bytes >= gb) && (bytes < tb)) {
-      return `${Math.round(bytes / gb)} Go`;
+    return `${Math.round(bytes / gb)} Go`;
 
   } else if (bytes >= tb) {
-      return `${Math.round(bytes / tb)} To`;
+    return `${Math.round(bytes / tb)} To`;
 
   } else {
-      return `${bytes} o`;
+    return `${bytes} o`;
   }
 }
 
-function Files_table(props) {
-  const data = props.files;
+const IndeterminateCheckbox = React.forwardRef(
+  ({ indeterminate, ...rest }, ref) => {
+    const defaultRef = React.useRef()
+    const resolvedRef = ref || defaultRef
+
+    React.useEffect(() => {
+      resolvedRef.current.indeterminate = indeterminate
+    }, [resolvedRef, indeterminate])
+
+    return (
+      <>
+        <input type="checkbox" ref={resolvedRef} {...rest} />
+      </>
+    )
+  }
+)
+
+function Files_table({ files, path, onRowSelectStateChange, onClickFile }) {
+  const data = files;
+
+  const [current, setCurrent] = useState();
 
   const columns = React.useMemo(
     () => [
@@ -75,15 +96,45 @@ function Files_table(props) {
     []
   )
 
-  const tableInstance = useTable({ columns, data })
-
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns, data }) 
+    selectedFlatRows,
+    state: { selectedRowIds },
+  } = useTable(
+    {
+      columns,
+      data,
+    },
+    useSortBy,
+    useRowSelect,
+    hooks => {
+      hooks.visibleColumns.push(columns => [
+        {
+          id: 'selection',
+          Header: ({ getToggleAllRowsSelectedProps }) => (
+            <div>
+              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+            </div>
+          ),
+          Cell: ({ row }) => (
+            <div>
+              <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+            </div>
+          ),
+        },
+        ...columns,
+      ])
+    }
+  )
+
+  React.useEffect(() => onRowSelectStateChange?.(selectedRowIds), [
+    onRowSelectStateChange,
+    selectedRowIds
+  ]);
 
   return (
     <table {...getTableProps()}>
@@ -91,10 +142,15 @@ function Files_table(props) {
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th
-                {...column.getHeaderProps()}
-              >
+              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                 {column.render('Header')}
+                <span>
+                  {column.isSorted
+                    ? column.isSortedDesc
+                      ? <IoMdArrowDropdown />
+                      : <IoMdArrowDropup />
+                    : null}
+                </span>
               </th>
             ))}
           </tr>
@@ -103,9 +159,11 @@ function Files_table(props) {
       <tbody {...getTableBodyProps()}>
         {rows.map(row => {
           prepareRow(row)
+
           return (
-            <tr {...row.getRowProps()}>
+            <tr className={row.isSelected ? 'selected' : null} onClick={() => { onClickFile(row); }} {...row.getRowProps()}>
               {row.cells.map(cell => {
+
                 return (
                   <td
                     {...cell.getCellProps()}
@@ -116,6 +174,7 @@ function Files_table(props) {
               })}
             </tr>
           )
+
         })}
       </tbody>
     </table>

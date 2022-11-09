@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Files_table from './Files_table';
-import { useParams, Link, Router, BrowserRouter } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 import 'split-pane-react/esm/themes/default.css'
 import './css/App.css';
@@ -18,11 +19,11 @@ function Path(props) {
   const path = props.path.split('/');
   return (
     <div className="path">
-      <Link to={"/"} className="path-link">
+      <Link to={"./"} className="path-link">
         Accueil
       </Link>
       {
-        props.path !== "/" && props.path !== ""
+        props.path !== ""
           ? <>
             {path.map((p, i) => (
               <>
@@ -40,6 +41,8 @@ function Path(props) {
 }
 
 function ExplorerBody(props) {
+  const navigate = useNavigate();
+
   return (
     <section>
 
@@ -54,10 +57,11 @@ function ExplorerBody(props) {
       </div>
 
       <div className='nav'>
-        <div className="small_fluent_btn">
+        <div className="small_fluent_btn" onClick={() => navigate(-1)}>
           <img className="svg" src={back} />
         </div>
-        <div className="small_fluent_btn">
+        
+        <div className="small_fluent_btn" onClick={() => navigate(1)}>
           <img className="svg" src={right} />
         </div>
         <div className="small_fluent_btn">
@@ -75,6 +79,9 @@ function ExplorerBody(props) {
       <div className='files'>
         <Files_table
           files={props.files}
+          path={props.path}
+          onRowSelectStateChange={props.setSelectedRowIds}
+          onClickFile = {props.onClickFile}
         />
       </div>
 

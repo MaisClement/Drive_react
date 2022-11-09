@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Explorer from './Explorer';
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, useHistory, Link, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 
 import './css/color.css';
@@ -33,9 +33,15 @@ function Header() {
 function App() {
   const location = useLocation();
 
+  const [path, setPath] = useState("/");
+
+  React.useEffect(() => {
+    setPath(location.pathname);
+  }, [location]);
+
   return (
     <Drive
-      path={location.pathname.substring(1)}
+      path={path}
     />
   )
 }
@@ -49,7 +55,7 @@ class Drive extends React.Component {
       path: "",
       tree: [],
       files: [],
-      base_url: "https://drive.hackernwar.com/?ctrl=",
+      base_url: "https://drive.hackernwar.com/",
 
       error: null,
       error_message: null
@@ -63,13 +69,14 @@ class Drive extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.path !== this.props.path) {  
+    if (prevProps.path !== this.props.path) {
       this.getFiles(this.props.path);
     }
+    console.log(window.location.pathname);
   }
 
   getFiles(path) {
-    const url = this.state.base_url + "get_file&p=" + path;
+    const url = this.state.base_url + "get_files.php?p=" + path;
 
     this.setState({
       isLoading: true,
@@ -81,11 +88,20 @@ class Drive extends React.Component {
       .then(res => res.json())
       .then(data => {
 
+        const temp_path = data.path;
         this.setState({
-          path: data.path,
+          path: temp_path[0] === "/" ? temp_path.substring(1) : temp_path,
           files: data.files,
           isLoading: false,
         });
+
+        // https://reactrouter.com/en/main/hooks/use-navigate
+        
+        // if (window.location.pathname == "/")
+        //   window.history.pushState("", "", data.path);
+        //   const history = useHistory();
+        //   history.push(data.path)
+        
       })
       .catch(err => {
         this.setState({
@@ -104,6 +120,7 @@ class Drive extends React.Component {
           files={this.state.files}
           tree={this.state.tree}
           isLoading={this.state.isLoading}
+          getFiles = {this.getFiles}
         />
       </div>
     );
