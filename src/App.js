@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Explorer from './Explorer';
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import he from 'he';
 
 import './css/color.css';
 import './css/App.css';
@@ -44,7 +45,7 @@ function App() {
 
 function Drive () {
   const location = useLocation();
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const [path, setPath] = useState("/");
   const [isLoading, setIsLoading] = useState(false);
@@ -54,20 +55,18 @@ function Drive () {
 
   React.useEffect(() => {
     if (path !== location.pathname) {
-      setPath(location.pathname);
-      getFiles(path);
+      getFiles(location.pathname);
     }
   }, [location]);
 
   React.useEffect(() => {
     getFiles(path);
+    getFolder(path);
   },[]);
 
-  async function getFiles(path) {
+  function getFiles(path) {
     const url = base_url + "get_files.php?p=" + path;
-
     setIsLoading(true);
-
     fetch(url, {
       method: 'get'
     })
@@ -75,20 +74,37 @@ function Drive () {
       .then(data => {
 
         const temp_path = data.path;
-        
         setPath(temp_path[0] === "/" ? temp_path.substring(1) : temp_path);
         setFiles(data.files);
         setIsLoading(false);
 
-        Nav(data.path);
-        
+        if (decodeURIComponent(location.pathname).replace("/", "") != decodeURIComponent(data.path)){
+          navigate(data.path);
+        }
       })
       .catch(err => {
         // 
       });
   }
 
-  // history('/home');
+  function getFolder(path, id = 0) {
+    const url = base_url + "get_folder.php?p=" + path + "&id=" + id;
+    fetch(url, {
+      method: 'get'
+    })
+      .then(res => res.json())
+      .then(data => {
+        setTree(data.files);
+      })
+      .catch(err => {
+        // 
+      });
+  }
+
+  function updateFiles () {
+    getFiles(location.pathname)
+  }
+  
 
   return (
     <div className="App">
@@ -99,18 +115,11 @@ function Drive () {
         tree={tree}
         isLoading={isLoading}
         getFiles = {getFiles}
+        updateFiles = {updateFiles}
       />
     </div>
   );
-
 }
 
-
-
-function Nav (url) {
-  const navigate = useNavigate();
-
-  navigate(url, {replace: true});
-}
 
 export default App;

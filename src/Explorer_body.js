@@ -64,7 +64,7 @@ function ExplorerBody(props) {
         <div className="small_fluent_btn" onClick={() => navigate(1)}>
           <img className="svg" src={right} />
         </div>
-        <div className="small_fluent_btn">
+        <div className="small_fluent_btn" onClick={() => props.updateFiles()}>
           <img className="svg" src={update} />
         </div>
 

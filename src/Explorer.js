@@ -23,24 +23,24 @@ class Explorer extends React.Component {
     this.onClickFile = this.onClickFile.bind(this);
   }
 
-  setSizes (val) {
+  setSizes(val) {
     this.setState({
       sizes: val
     })
   }
 
-  setSelectedRowIds (val) {
+  setSelectedRowIds(val) {
     this.setState({
       selectedRowIds: val
     })
   }
 
-  onClickFile (row) {
-    if (row.original.type == 'folder'){
+  onClickFile(row) {
+    if (row.original.type == 'folder') {
       if (row.isSelected) {
         this.props.getFiles(`${this.props.path}/${row.original.name}`);
       }
-      row.toggleRowSelected(); 
+      row.toggleRowSelected();
     }
   }
 
@@ -53,24 +53,26 @@ class Explorer extends React.Component {
           onChange={this.setSizes}
         >
           <Pane minSize={50} maxSize='50%'>
+            
             <ExplorerPane
-              tree={this.props.tree}
-            />
+                  tree={this.props.tree}
+                />
           </Pane>
-  
+
           <ExplorerBody
             path={this.props.path}
             files={this.props.files}
             isLoading={this.props.isLoading}
-            setSelectedRowIds = {this.setSelectedRowIds}
-            onClickFile = {this.onClickFile}
+            setSelectedRowIds={this.setSelectedRowIds}
+            onClickFile={this.onClickFile}
+            updateFiles={this.props.updateFiles}
           />
         </SplitPane>
 
         {
           this.state.redirecturl != null
-          ? <Navigate to={this.state.redirecturl} replace={true} />
-          : null
+            ? <Navigate to={this.state.redirecturl} replace={true} />
+            : null
         }
       </div>
     );

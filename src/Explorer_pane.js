@@ -13,52 +13,11 @@ import './css/Header.css';
 import settings from './img/settings.svg';
 import database from './img/database.svg';
 import folder from './img/folder.png';
+import opened_folder from './img/opened_folder.png';
 
-const initialData = [
-  {
-    name: "",
-    id: 0,
-    children: [1, 2, 3],
-    parent: null,
-  },
-  {
-    name: "Fruits",
-    children: [],
-    id: 1,
-    parent: 0,
-    isBranch: true,
-  },
-  {
-    name: "Drinks",
-    children: [4, 5],
-    id: 2,
-    parent: 0,
-    isBranch: true,
-  },
-  {
-    name: "Vegetables",
-    children: [],
-    id: 3,
-    parent: 0,
-    isBranch: true,
-  },
-  {
-    name: "Pine colada",
-    children: [],
-    id: 4,
-    parent: 2,
-  },
-  {
-    name: "Water",
-    children: [],
-    id: 5,
-    parent: 2,
-  },
-];
-
-function MultiSelectCheckboxAsync() {
+function MultiSelectCheckboxAsync(props) {
   const loadedAlertElement = useRef(null);
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(props.data);
   const [nodesAlreadyLoaded, setNodesAlreadyLoaded] = useState([]);
 
   const updateTreeData = (list, id, children) => {
@@ -81,26 +40,36 @@ function MultiSelectCheckboxAsync() {
       }
       setTimeout(() => {
         setData((value) =>
-          updateTreeData(value, element.id, [
-            {
-              name: `Child Node ${value.length}`,
-              children: [],
-              id: value.length,
-              parent: element.id,
-              isBranch: true,
-            },
-            {
-              name: "Another child Node",
-              children: [],
-              id: value.length + 1,
-              parent: element.id,
-            },
-          ])
+          updateTreeData(value, element.id, dat (value, element))
         );
         resolve();
-      }, 1000);
+      }, 100);
     });
   };
+
+  function dat (value, element) {
+    const url = "https://drive.hackernwar.com/get_folder.php?p=" + element.name + "&id=" + element.id;
+     fetch(url, {
+       method: 'get'
+     })
+       .then(res => res.json())
+       .then(data => {
+         console.log(data.files)
+       })
+       .catch(err => {
+         // 
+       });
+
+    return [
+      {
+        name: `Child Node ${value.length}`,
+        children: [],
+        id: value.length,
+        parent: element.id,
+        isBranch: true,
+      }
+    ]
+  }
 
   const wrappedOnLoadData = async (props) => {
     const nodeHasNoChildData = props.element.children.length === 0;
@@ -160,7 +129,7 @@ function MultiSelectCheckboxAsync() {
                   style={{ paddingLeft: 15 * (level - 1) }}
                 >
                   {isBranch && branchNode(isExpanded, element)}
-                  <img src={folder} alt="" />
+                  <img src={isExpanded ? opened_folder : folder} alt="" />
                   <span className="name">{element.name}</span>
                 </div>
               );
@@ -173,20 +142,7 @@ function MultiSelectCheckboxAsync() {
 }
 
 const ArrowIcon = ({ isOpen }) => {
-  return <IoMdArrowDropright style={isOpen ? {"transform":"rotate(90deg)"} : null} className="tree-arrow" />;
-};
-
-const CheckBoxIcon = ({ variant, ...rest }) => {
-  switch (variant) {
-    case "all":
-      return <FaCheckSquare {...rest} />;
-    case "none":
-      return <FaSquare {...rest} />;
-    case "some":
-      return <FaMinusSquare {...rest} />;
-    default:
-      return null;
-  }
+  return <IoMdArrowDropright style={isOpen ? { "transform": "rotate(90deg)" } : null} className="tree-arrow" />;
 };
 
 function ExplorerPane(props) {
@@ -194,14 +150,12 @@ function ExplorerPane(props) {
     <div className='pane'>
 
       {
-        props.tree == []
-          ? <SpinnerCircularFixed size={50} thickness={100} speed={100} color="rgba(130, 2, 130, 1)" secondaryColor="rgba(18, 18, 18, 1)" />
-          : <div className='pane-container'>
-            <MultiSelectCheckboxAsync />
-            {
-              // BasicTreeView
-              // https://dgreene1.github.io/react-accessible-treeview/docs/examples-MultiSelectCheckboxAsync
-            }
+        props.tree.length > 0
+          ? <MultiSelectCheckboxAsync
+            data={props.tree}
+          />
+          : <div className='center'>
+            <SpinnerCircularFixed size={50} thickness={100} speed={100} color="rgba(130, 2, 130, 1)" secondaryColor="rgba(18, 18, 18, 1)" />
           </div>
       }
 
