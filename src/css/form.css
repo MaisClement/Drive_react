@@ -1,0 +1,80 @@
+input:disabled {
+	cursor: not-allowed;
+}
+
+/* --- Small Fluent Btn --- */
+
+.red{
+	background-color: var(--red-primary);
+} 
+.red:hover{
+	background-color: var(--red-secondary);
+}
+
+.blue{
+	background-color: var(--blue-primary);
+} 
+.blue:hover{
+	background-color: var(--blue-secondary);
+}
+
+/* --- Fluent TextArea --- */
+
+.fluent_textarea{	
+	width: 100%;
+	font-size: 14px;
+	max-width: 100%;
+	min-width: 100%;	
+
+	border: 2px solid var(--transparent);
+  background-color: var(--el-back-primary);
+	border-radius: 5px;
+	padding: 10px;
+	margin-bottom: 15px;
+
+	outline: 0;
+	box-sizing: border-box;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.fluent_textarea:hover, .fluent_textarea:active, .fluent_textarea:focus{
+	border: 2px solid #4f474e61;
+}
+
+/* --- Form File --- */
+
+.fluent_form input[type="file"]{
+	padding: 5px;
+    border-radius: 5px;
+	outline: 0;
+	height: 32px;
+	margin-top: 5px;
+	display: block;
+	width: calc(100% - 13px);
+	font-weight: bold;
+	font-size: 17px;
+
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.fluent_form input[type="file"] {
+	border: 2px solid #4f474e00;
+}
+.fluent_form input[type="file"]:hover, .fluent_form input[type="file"]:active, .fluent_form input[type="file"]:focus{
+	background-color: #0000000a;
+	border: 2px solid #4f474e61;
+}
+
+.fluent_form input[type="text"],.fluent_form input[type="password"] {
+	border:2px solid var(--transparent);
+	border-radius:5px;
+	display:block;
+	font:700 17px "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+	height:32px;
+	margin-top:5px;
+	outline:0;
+	padding:5px;
+	width:calc(100% - 13px);
+}
+.fluent_form input[type="text"]:hover,.fluent_form input[type="text"]:active,.fluent_form input[type="text"]:focus,.fluent_form input[type="password"]:hover,.fluent_form input[type="password"]:active,.fluent_form input[type="password"]:focus {
+	background-color:var(--el-back-hover);
+	border:2px solid var(--border-color);
+}

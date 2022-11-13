@@ -97,7 +97,7 @@
   transition: all 200ms;
 }
 
-.tree-leaf-list-item{
+.tree-leaf-list-item {
   padding-left: 15px;
 }
 
@@ -147,7 +147,8 @@
 
 /* --- --- */
 
-.files tbody td:first-child, .files thead th:first-child {
+.files tbody td:first-child,
+.files thead th:first-child {
   width: 30px;
   text-align: center;
 }
@@ -157,17 +158,20 @@
   text-align: center;
 }
 
-.files tbody td:nth-child(4), .files thead th:nth-child(4) {
+.files tbody td:nth-child(4),
+.files thead th:nth-child(4) {
   width: 80px;
   text-align: left;
 }
 
-.files tbody td:nth-child(5), .files thead th:nth-child(5) {
+.files tbody td:nth-child(5),
+.files thead th:nth-child(5) {
   width: 190px;
   text-align: left;
 }
 
-.files tbody td:nth-child(6), .files thead th:nth-child(6) {
+.files tbody td:nth-child(6),
+.files thead th:nth-child(6) {
   width: 60px;
   text-align: left;
 }
@@ -178,17 +182,27 @@
   border: 1px solid #820282;
 }
 
+.space {
+  border: 1px solid var(--text);
+}
+
+.options-space {
+  background-color: #777;
+  border-radius: 5px;
+  width: 2px;
+  height: 30px;
+  display: inline-block;
+}
+
 /* --- --- */
 
 .is-hidden {
   opacity: 0;
 }
+
 .center {
   text-align: center;
 }
-
-
-
 
 ul {
   padding: 0;
@@ -212,7 +226,7 @@ li {
 
 
 
-.files tbody tr input:checked ~ .tr{
+.files tbody tr input:checked~.tr {
   color: red
 }
 
@@ -220,9 +234,7 @@ li {
 /*------- Toogle -------*/
 
 .toggle-control {
-  display: block;
   position: relative;
-  float: right;
   padding-left: 50px;
   margin-bottom: 12px;
   cursor: pointer;
@@ -231,17 +243,8 @@ li {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-}  
-.toggle-control input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
 }
-.toggle-control input:checked ~ .control:after {
-  left: 30px;
-}
+
 .toggle-control .control {
   position: absolute;
   top: 0;
@@ -252,6 +255,7 @@ li {
   -webkit-transition: background-color 0.15s ease-in;
   transition: background-color 0.15s ease-in;
 }
+
 .toggle-control .control:after {
   content: "";
   position: absolute;
@@ -263,4 +267,145 @@ li {
   background: white;
   -webkit-transition: left 0.15s ease-in;
   transition: left 0.15s ease-in;
+}
+
+
+.toggle-control .control {
+  background-color: var(--el-back-secondary);
+}
+
+.toggle-control .control:after {
+  background: #fff;
+}
+
+.toggle-control.checked .control {
+  background-color: var(--blue-primary);
+}
+
+.toggle-control.checked .control:after {
+  left: 30px;
+}
+
+.toogle-div label {
+  position: relative;
+  top: -5px;
+  margin-left: 10px;
+}
+
+
+
+.modal-back {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(30, 30, 30, 0.8);
+  backdrop-filter: blur(2px);
+}
+
+.modal {
+  display: block;
+  position: relative;
+
+  top: 25vh;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  width: calc(100vw - 40px);
+  max-width: 500px;
+  height: calc(100vh - 40px);
+  max-height: 450px;
+
+  margin: auto;
+  padding: 20px;
+
+  background-color: var(--body);
+  border-radius: 10px;
+  box-shadow: #82028290 0px 7px 29px 0px;
+}
+.mini-modal {
+  display: block;
+  position: relative;
+
+  top: 25vh;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  width: calc(100vw - 40px);
+  max-width: 500px;
+  height: calc(100vh - 40px);
+  max-height: 200px;
+
+  margin: auto;
+  padding: 20px;
+
+  background-color: var(--body);
+  border-radius: 10px;
+  box-shadow: #82028290 0px 7px 29px 0px;
+}
+.small-modal {
+  display: block;
+  position: relative;
+
+  top: 25vh;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  width: calc(100vw - 40px);
+  max-width: 500px;
+  height: calc(100vh - 40px);
+  max-height: 300px;
+
+  margin: auto;
+  padding: 20px;
+
+  background-color: var(--body);
+  border-radius: 10px;
+  box-shadow: #82028290 0px 7px 29px 0px;
+}
+.modal .footer, .mini-modal .footer, .small-modal .footer {
+  position: absolute;
+  width: 90%;
+  bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+}
+
+h2 {
+  margin: 10px;
+}
+
+.storage-bar {
+  height: 1vmin;
+  position: relative;
+  border-radius: 1vmin;
+  transition: all 0.8s;
+  min-width: 1vmin;
+  animation: storage-bar 1.5s ease;
+}
+
+.storage-round {
+  display: inline-block;
+  border-radius: 10px;
+  height: 2vmin;
+  position: relative;
+  top: 3px;
+  width: 2vmin;
+}
+
+@keyframes storage-bar {
+  0% {
+    max-width: 2vmin;
+  }
+
+  100% {
+    max-width: 100%;
+  }
 }

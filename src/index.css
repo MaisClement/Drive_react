@@ -10,7 +10,7 @@ code {
 }
 
 body {
-  background-color: var(--el-back-secondary);
+  background-color: var(--body);
   color: var(--text);
 }
 

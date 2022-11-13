@@ -6,7 +6,7 @@
   height: calc(100vh - 70px);
   display: flex;
   flex-direction: column;
-  background: #3c3c3c;
+  background: var(--el-back-secondary);
   border-right: 2px solid #4b4b4b;
   padding-top: 10px;
 }

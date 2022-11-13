@@ -1,124 +1,213 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import Explorer from './Explorer';
-import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import he from 'he';
+import Modal from './Modal';
 
 import './css/color.css';
+import './css/form.css';
 import './css/App.css';
 import './css/Header.css';
 import './css/Explorer.css';
 
 function Header() {
-  return (
-    <header>
-      <div style={{ width: '100px' }}>
-        <a href="https://drive.hackernwar.com/">
-          <img
-            src="https://drive.hackernwar.com/view/img/ftp.png"
-            alt="Logo"
-          />
-        </a>
-        <span className='title'>Drive</span>
-      </div>
-    </header>
+	return (
+		<header>
+			<div style={{ width: '100px' }}>
+				<Link to={'./'}>
+					<img
+						src="https://drive.hackernwar.com/view/img/ftp.png"
+						alt="Logo"
+					/>
+				</Link>
+				<span className='title'>Drive</span>
+			</div>
+		</header>
 
-  );
+	);
 }
 
 function App() {
-  const location = useLocation();
+	const location = useLocation();
+	const navigate = useNavigate();
+	const base_url = "https://drive.hackernwar.com/";
 
-  const [path, setPath] = useState("/");
+	const [path, setPath] = useState(location.pathname);
+	const [isLoading, setIsLoading] = useState(false);
+	const [tree, setTree] = useState([]);
+	const [files, setFiles] = useState([]);
+	const [sizes, setSizes] = useState([30, 100, '100%']);
+	const [selectedRowIds, setSelectedRowIds] = useState({});
+	const [current, setCurrent] = useState(null);
+	const [modal, setModal] = useState(null);
+	const [alert, setAlert] = useState({});
+	
+	const [storage, setStorage] = useState(null);
 
-  React.useEffect(() => {
-    setPath(location.pathname);
-  }, [location]);
+	React.useEffect(() => {
+		if (path !== location.pathname) {
+			getFiles(location.pathname);
+		}
+	}, [location]);
 
-  return (
-    <Drive
-      path={path}
-    />
-  )
-}
+	React.useEffect(() => {
+		getFiles(path);
+		// getDirectory(path);
+		getStorageInfo();
+	}, []);
 
-function Drive () {
-  const location = useLocation();
-  const navigate = useNavigate();
+	function getFiles(path) {
+		const url = base_url + "get_files.php?p=" + path;
+		setIsLoading(true);
+		fetch(url, {
+			method: 'get'
+		})
+			.then(res => res.json())
+			.then(data => {
 
-  const [path, setPath] = useState("/");
-  const [isLoading, setIsLoading] = useState(false);
-  const [tree, setTree] = useState([]);
-  const [files, setFiles] = useState([]);
-  const base_url = "https://drive.hackernwar.com/";
+				const temp_path = data.path;
+				setPath(temp_path[0] === "/" ? temp_path.substring(1) : temp_path);
+				setFiles(data.files);
+				setCurrent(null);
+				setIsLoading(false);
 
-  React.useEffect(() => {
-    if (path !== location.pathname) {
-      getFiles(location.pathname);
-    }
-  }, [location]);
+				if (decodeURIComponent(location.pathname).replace("/", "") != decodeURIComponent(data.path)) {
+					navigate(data.path);
+				}
+			})
+			.catch(err => {
+				// 
+			});
+	}
+	function updateFiles() {
+		getFiles(location.pathname)
+	}
+	function goToFiles(p) {
+		navigate(p);
+	}
+	function getDirectory(path, id = 0) {
+		const url = base_url + "get_directory.php?p=" + path + "&id=" + id;
+		fetch(url, {
+			method: 'get'
+		})
+			.then(res => res.json())
+			.then(data => {
+				setTree(data.files);
+			})
+			.catch(err => {
+				// 
+			});
+	}
+	function newDirectory(path, name) {
+		if (name.substring(0, 1) !== '/') {
+			name = `/${name}`;
+		}
+		const url = base_url + "new_directory.php?p=" + path + "&name=" + name;
+		fetch(url, {
+			method: 'get'
+		})
+			.then(res => {
+				if (res.status === 401) {
+					setAlert({title: 'Permission insuffisante', message: 'Vous n\'êtes pas autorisé à créer, modifier ou supprimer des élements.'})
+					setModal('alert');
+					throw "exit";
+				} else if (res.status !== 200) {
+					setAlert({title: 'Création du dossier impossible', message: 'Une erreur s\'est produite.'})
+					setModal('alert');
+					throw "exit";
+				}
+				res.json()
+			})
+			.then(data => {
+				setModal(null);
+				getFiles(path + name);
+			})
+			.catch(err => {
+				// 
+			});
+	}
+	function getStorageInfo() {
+		const url = base_url + "get_storage_info.php";
+		fetch(url, {
+			method: 'get'
+		})
+			.then(res => res.json())
+			.then(data => {
+				setStorage(data);
+			})
+			.catch(err => {
+				// 
+			});
+	}
+	function onClickFiles(row) {
+		if (row.original.type === 'directory') {
+			if (current === row) {
+				//getFiles(`${path}/${row.original.name}`);
+				goToFiles(`${path}/${row.original.name}`);
+				setCurrent(null);
 
-  React.useEffect(() => {
-    getFiles(path);
-    getFolder(path);
-  },[]);
+			} else {
+				if (current === null) {
+					row.toggleRowSelected();
+				} else {
+					row.toggleRowSelected();
+					current.toggleRowSelected();
+				}
+				setCurrent(row);
+			}
+		} else {
+			if (current === row) {
+				console.log('oui');
+				setCurrent(null);
 
-  function getFiles(path) {
-    const url = base_url + "get_files.php?p=" + path;
-    setIsLoading(true);
-    fetch(url, {
-      method: 'get'
-    })
-      .then(res => res.json())
-      .then(data => {
+			} else {
+				if (current === null) {
+					row.toggleRowSelected();
+				} else {
+					row.toggleRowSelected();
+					current.toggleRowSelected();
+				}
+				setCurrent(row);
+			}
+		}
+	}
 
-        const temp_path = data.path;
-        setPath(temp_path[0] === "/" ? temp_path.substring(1) : temp_path);
-        setFiles(data.files);
-        setIsLoading(false);
+	return (
+		<div className="App">
+			<Header />
+			<Explorer
+				path={path}
+				files={files}
+				tree={tree}
+				isLoading={isLoading}
+				sizes={sizes}
+				setSizes={setSizes}
+				selectedRowIds={selectedRowIds}
+				current={current}
+				modal={modal}
+				setModal={setModal}
+				setSelectedRowIds={setSelectedRowIds}
+				onClickFiles={onClickFiles}
+				getFiles={getFiles}
+				updateFiles={updateFiles}
 
-        if (decodeURIComponent(location.pathname).replace("/", "") != decodeURIComponent(data.path)){
-          navigate(data.path);
-        }
-      })
-      .catch(err => {
-        // 
-      });
-  }
+				storage = {storage}
+			/>
+			<Modal
+				path={path}
+				files={files}
+				alert={alert}
+				modal={modal}
+				setModal={setModal}
 
-  function getFolder(path, id = 0) {
-    const url = base_url + "get_folder.php?p=" + path + "&id=" + id;
-    fetch(url, {
-      method: 'get'
-    })
-      .then(res => res.json())
-      .then(data => {
-        setTree(data.files);
-      })
-      .catch(err => {
-        // 
-      });
-  }
+				selectedRowIds={selectedRowIds}
+				current={current}
 
-  function updateFiles () {
-    getFiles(location.pathname)
-  }
-  
-
-  return (
-    <div className="App">
-      <Header />
-      <Explorer
-        path={path}
-        files={files}
-        tree={tree}
-        isLoading={isLoading}
-        getFiles = {getFiles}
-        updateFiles = {updateFiles}
-      />
-    </div>
-  );
+				storage = {storage}
+				newDirectory = {newDirectory}
+			/>
+		</div>
+	);
 }
 
 

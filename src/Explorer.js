@@ -9,74 +9,39 @@ import 'split-pane-react/esm/themes/default.css'
 import './css/App.css';
 import './css/Header.css';
 
-class Explorer extends React.Component {
-  constructor() {
-    super();
+function Explorer(props) {
+	return (
+		<div className='explorer'>
+			<SplitPane
+				split='vertical'
+				sizes={props.sizes}
+				onChange={props.setSizes}
+			>
+				<Pane minSize={50} maxSize='50%'>
+					<ExplorerPane
+						tree={props.tree}
+						modal={props.modal}
+						setModal={props.setModal}
 
-    this.state = {
-      sizes: [30, 100, '100%'],
-      selectedRowIds: {}
-    }
+						storage = {props.storage}
+					/>
+				</Pane>
 
-    this.setSizes = this.setSizes.bind(this);
-    this.setSelectedRowIds = this.setSelectedRowIds.bind(this);
-    this.onClickFile = this.onClickFile.bind(this);
-  }
-
-  setSizes(val) {
-    this.setState({
-      sizes: val
-    })
-  }
-
-  setSelectedRowIds(val) {
-    this.setState({
-      selectedRowIds: val
-    })
-  }
-
-  onClickFile(row) {
-    if (row.original.type == 'folder') {
-      if (row.isSelected) {
-        this.props.getFiles(`${this.props.path}/${row.original.name}`);
-      }
-      row.toggleRowSelected();
-    }
-  }
-
-  render() {
-    return (
-      <div className='explorer'>
-        <SplitPane
-          split='vertical'
-          sizes={this.state.sizes}
-          onChange={this.setSizes}
-        >
-          <Pane minSize={50} maxSize='50%'>
-            
-            <ExplorerPane
-                  tree={this.props.tree}
-                />
-          </Pane>
-
-          <ExplorerBody
-            path={this.props.path}
-            files={this.props.files}
-            isLoading={this.props.isLoading}
-            setSelectedRowIds={this.setSelectedRowIds}
-            onClickFile={this.onClickFile}
-            updateFiles={this.props.updateFiles}
-          />
-        </SplitPane>
-
-        {
-          this.state.redirecturl != null
-            ? <Navigate to={this.state.redirecturl} replace={true} />
-            : null
-        }
-      </div>
-    );
-  }
+				<ExplorerBody
+					path={props.path}
+					files={props.files}
+					current={props.current}
+					isLoading={props.isLoading}
+					modal={props.modal}
+					setModal={props.setModal}
+					selectedRowIds={props.selectedRowIds}
+					setSelectedRowIds={props.setSelectedRowIds}
+					onClickFiles={props.onClickFiles}
+					updateFiles={props.updateFiles}
+				/>
+			</SplitPane>
+		</div>
+	);
 }
 
 export default Explorer;
