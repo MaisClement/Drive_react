@@ -10,7 +10,7 @@ import drag_and_drop from './img/drag-and-drop.svg';
 function Button(props) {
 	const space = <span className='options-space'></span>;
 
-	if (Object.getOwnPropertyNames(props.selectedRowIds).length == 1) {
+	if (Object.getOwnPropertyNames(props.selectedRowIds).length === 1) {
 		const id = Object.keys(props.selectedRowIds);
 		if (props.files[id] === undefined) return null;
 		const name = props.files[id].name;
@@ -35,7 +35,7 @@ function Button(props) {
 					<img className="svg" src={drag_and_drop} alt="" />
 					<span>Déplacer</span>
 				</div>
-				<div className="small_fluent_btn" style={{ width: 130 }}>
+				<div className="small_fluent_btn" style={{ width: 130 }} onClick={() => props.setModal('rename')}>
 					<img className="svg" src={edit_file} alt="" />
 					<span>Renommer</span>
 				</div>

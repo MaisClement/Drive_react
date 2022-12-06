@@ -36,6 +36,7 @@ function App() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [tree, setTree] = useState([]);
 	const [files, setFiles] = useState([]);
+	const [file, setFile] = useState([]);
 	const [sizes, setSizes] = useState([30, 100, '100%']);
 	const [selectedRowIds, setSelectedRowIds] = useState({});
 	const [current, setCurrent] = useState(null);
@@ -52,7 +53,7 @@ function App() {
 
 	React.useEffect(() => {
 		getFiles(path);
-		// getDirectory(path);
+		getDirectory(path);
 		getStorageInfo();
 	}, []);
 
@@ -171,6 +172,31 @@ function App() {
 			}
 		}
 	}
+	function rename(path, old_name, new_name) {
+		const url = base_url + "rename.php?p=" + path + "&old=" + old_name + "&new=" + new_name;
+		fetch(url, {
+			method: 'get'
+		})
+			.then(res => {
+				if (res.status === 401) {
+					setAlert({title: 'Permission insuffisante', message: 'Vous n\'êtes pas autorisé à créer, modifier ou supprimer des élements.'})
+					setModal('alert');
+					throw "exit";
+				} else if (res.status !== 200) {
+					setAlert({title: 'Renommage impossible', message: 'Une erreur s\'est produite.'})
+					setModal('alert');
+					throw "exit";
+				}
+				res.json()
+			})
+			.then(data => {
+				setModal(null);
+				updateFiles();
+			})
+			.catch(err => {
+				// 
+			});
+	}
 
 	return (
 		<div className="App">
@@ -198,6 +224,7 @@ function App() {
 				files={files}
 				alert={alert}
 				modal={modal}
+				file={file}
 				setModal={setModal}
 
 				selectedRowIds={selectedRowIds}
@@ -205,6 +232,7 @@ function App() {
 
 				storage = {storage}
 				newDirectory = {newDirectory}
+				rename = {rename}
 			/>
 		</div>
 	);
