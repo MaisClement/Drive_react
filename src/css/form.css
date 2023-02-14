@@ -4,30 +4,41 @@ input:disabled {
 
 /* --- Small Fluent Btn --- */
 
-.red{
+.red {
 	background-color: var(--red-primary);
-} 
-.red:hover{
+}
+
+.red:hover {
 	background-color: var(--red-secondary);
 }
 
-.blue{
+.blue {
 	background-color: var(--blue-primary);
-} 
-.blue:hover{
+}
+
+.blue:hover {
 	background-color: var(--blue-secondary);
 }
 
+.green {
+	background-color: var(--green-primary);
+}
+
+.green:hover {
+	background-color: var(--green-secondary);
+}
+
+
 /* --- Fluent TextArea --- */
 
-.fluent_textarea{	
+.fluent_textarea {
 	width: 100%;
 	font-size: 14px;
 	max-width: 100%;
-	min-width: 100%;	
+	min-width: 100%;
 
 	border: 2px solid var(--transparent);
-  background-color: var(--el-back-primary);
+	background-color: var(--el-back-primary);
 	border-radius: 5px;
 	padding: 10px;
 	margin-bottom: 15px;
@@ -36,15 +47,18 @@ input:disabled {
 	box-sizing: border-box;
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
-.fluent_textarea:hover, .fluent_textarea:active, .fluent_textarea:focus{
+
+.fluent_textarea:hover,
+.fluent_textarea:active,
+.fluent_textarea:focus {
 	border: 2px solid #4f474e61;
 }
 
 /* --- Form File --- */
 
-.fluent_form input[type="file"]{
+.fluent_form input[type="file"] {
 	padding: 5px;
-    border-radius: 5px;
+	border-radius: 5px;
 	outline: 0;
 	height: 32px;
 	margin-top: 5px;
@@ -55,26 +69,76 @@ input:disabled {
 
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
+
 .fluent_form input[type="file"] {
 	border: 2px solid #4f474e00;
 }
-.fluent_form input[type="file"]:hover, .fluent_form input[type="file"]:active, .fluent_form input[type="file"]:focus{
+
+.fluent_form input[type="file"]:hover,
+.fluent_form input[type="file"]:active,
+.fluent_form input[type="file"]:focus {
 	background-color: #0000000a;
 	border: 2px solid #4f474e61;
 }
 
-.fluent_form input[type="text"],.fluent_form input[type="password"] {
-	border:2px solid var(--transparent);
-	border-radius:5px;
-	display:block;
-	font:700 17px "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
-	height:32px;
-	margin-top:5px;
-	outline:0;
-	padding:5px;
-	width:calc(100% - 13px);
+.fluent_form input[type="text"],
+.fluent_form input[type="password"] {
+	background: var(--el-back-primary);
+	border: 2px solid var(--transparent);
+	border-radius: 5px;
+	display: block;
+	font: 700 17px "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	height: 32px;
+	margin-top: 5px;
+	outline: 0;
+	padding: 5px;
+	width: calc(100% - 13px);
 }
-.fluent_form input[type="text"]:hover,.fluent_form input[type="text"]:active,.fluent_form input[type="text"]:focus,.fluent_form input[type="password"]:hover,.fluent_form input[type="password"]:active,.fluent_form input[type="password"]:focus {
-	background-color:var(--el-back-hover);
-	border:2px solid var(--border-color);
+
+.fluent_form input[type="text"]:hover,
+.fluent_form input[type="text"]:active,
+.fluent_form input[type="text"]:focus,
+.fluent_form input[type="password"]:hover,
+.fluent_form input[type="password"]:active,
+.fluent_form input[type="password"]:focus {
+	background-color: var(--el-back-hover);
+	border: 2px solid var(--border-color);
+}
+
+.large_btn {
+	border-radius: 10px;
+	cursor: pointer;
+	padding: 12px 0;
+	border: 2px solid #00000000;
+	width: 95px;
+	display: inline-block;
+	text-align: center;
+	color: #868686;
+	height: 101px;
+	overflow: hidden;
+	font-size: 15px;
+	word-wrap: anywhere;
+}
+
+.large_btn:active {
+	margin-top: 1px;
+}
+
+.large_btn span {
+	margin-left: 10px;
+	position: relative;
+	top: -10px;
+	opacity: 0;
+}
+
+.large_btn img {
+	padding: 0 22px;
+	width: 50px;
+}
+
+.large_btn:hover,
+.large_btn:active,
+.large_btn:focus {
+	background-color: var(--el-back-hover);
+	border: 2px solid var(--border-color);
 }

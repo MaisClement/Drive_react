@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Files_table from './Files_table';
 import Button from './Explorer_button';
 import { Link, useNavigate } from "react-router-dom";
@@ -50,7 +49,7 @@ function ExplorerBody(props) {
 				<div className="small_fluent_btn" onClick={() => props.setModal('new_directory')}>
 					<img className="svg" src={add_directory} />
 				</div>
-				<div className="small_fluent_btn">
+				<div className="small_fluent_btn" onClick={() => props.setModal('upload')}>
 					<img className="svg" src={upload} />
 					<i id="loader3" className="loader-3 is-hidden" />
 				</div>
@@ -61,6 +60,8 @@ function ExplorerBody(props) {
 					selectedRowIds={props.selectedRowIds}
 					current={props.current}
 					setModal={props.setModal}
+					download= {props.download}
+
 				/>
 
 			</div>

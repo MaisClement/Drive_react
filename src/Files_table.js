@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
 import { useTable, useSortBy, useRowSelect } from 'react-table'
-import {sizeFormat, Toogle, timeConverter} from './function';
+import { sizeFormat, timeConverter } from './function';
 import { useCookies } from 'react-cookie';
 
 const IndeterminateCheckbox = React.forwardRef(
@@ -21,9 +21,9 @@ const IndeterminateCheckbox = React.forwardRef(
 	}
 )
 
-function Files_table({ files, path, setSelectedRowIds, onClickFiles }) {
+function Files_table({ files, setSelectedRowIds, onClickFiles }) {
 	const data = files;
-	const [cookies, setCookie, removeCookie] = useCookies(['show_ext']);
+	const [cookies] = useCookies(['show_ext']);
 	const columns = React.useMemo(
 		() => [
 			{
@@ -34,6 +34,9 @@ function Files_table({ files, path, setSelectedRowIds, onClickFiles }) {
 			{
 				Header: 'Name',
 				accessor: 'name',
+				Cell: ({ row }) => cookies['show_ext'] === "true" && row.original.type !== "directory"
+					? String(`${row.original.name}.${row.original.type}`)
+					: String(row.original.name)
 			},
 			{
 				Header: 'Type',
@@ -122,11 +125,11 @@ function Files_table({ files, path, setSelectedRowIds, onClickFiles }) {
 
 								return (
 									<td
-										onClick={cell.column.id === 'selection' ? () => {} : () => { onClickFiles(row);}}
+										onClick={cell.column.id === 'selection' ? () => { } : () => { onClickFiles(row); }}
 										{...cell.getCellProps()}
 									>
 										{
-										 cell.render('Cell')
+											cell.render('Cell')
 										}
 									</td>
 								)

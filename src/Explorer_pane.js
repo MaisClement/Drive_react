@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { SpinnerCircularFixed } from 'spinners-react';
 import { IoMdArrowDropright } from "react-icons/io";
 import TreeView from "react-accessible-treeview";
-import {sizeFormat, Toogle} from './function';
+import { sizeFormat } from './function';
 
 import 'split-pane-react/esm/themes/default.css'
 import './css/App.css';
@@ -39,7 +39,6 @@ function MultiSelectCheckboxAsync(props) {
 
 			setData((value) => {
 				const url = "https://drive.hackernwar.com/get_directory_child.php?p=" + element.name + "&id=" + element.id;
-				let dat = [];
 				fetch(url, {
 					method: 'get'
 				})
@@ -58,7 +57,7 @@ function MultiSelectCheckboxAsync(props) {
 						}
 						updateTreeData(value, element.id, dat)
 					})
-					.catch(err => {
+					.catch(() => {
 						// 
 					});
 
@@ -103,11 +102,8 @@ function MultiSelectCheckboxAsync(props) {
 							element,
 							isBranch,
 							isExpanded,
-							isSelected,
-							isHalfSelected,
 							getNodeProps,
 							level,
-							handleSelect,
 							handleExpand,
 						}) => {
 							const branchNode = (isExpanded, element) => {
@@ -174,11 +170,11 @@ function ExplorerPane(props) {
 				/>
 				{
 					props.storage === null || props.storage === undefined
-					? <span>Stockage</span>
-					: <span>Stockage • {sizeFormat(props.storage.usage)}</span>
+						? <span>Stockage</span>
+						: <span>Stockage • {sizeFormat(props.storage.usage)}</span>
 
 				}
-				
+
 			</button>
 
 		</div>

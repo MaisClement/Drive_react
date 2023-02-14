@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import opened_directory from './img/opened-directory.svg'
 import trash from './img/trash_red.svg'
@@ -27,7 +27,7 @@ function Button(props) {
 						</Link>
 						: null
 				}
-				<div className="small_fluent_btn" style={{ width: 130 }}>
+				<div className="small_fluent_btn" style={{ width: 130 }} onClick={() => props.download()}>
 					<img className="svg" src={download} alt="" />
 					<span>Télécharger</span>
 				</div>
@@ -63,7 +63,7 @@ function Button(props) {
 				</div>
 			</>
 		)
-	} 
+	}
 }
 
 export default Button;

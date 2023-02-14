@@ -60,4 +60,4 @@ function Toogle(props) {
 	);
 }
 
-export {sizeFormat, Toogle, timeConverter};
+export { sizeFormat, Toogle, timeConverter };

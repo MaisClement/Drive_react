@@ -1,7 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
 import SplitPane, { Pane } from 'split-pane-react';
-import { useNavigate, Navigate } from "react-router-dom";
 
 import ExplorerPane from './Explorer_pane';
 import ExplorerBody from './Explorer_body';
@@ -23,7 +21,7 @@ function Explorer(props) {
 						modal={props.modal}
 						setModal={props.setModal}
 
-						storage = {props.storage}
+						storage={props.storage}
 					/>
 				</Pane>
 
@@ -38,6 +36,7 @@ function Explorer(props) {
 					setSelectedRowIds={props.setSelectedRowIds}
 					onClickFiles={props.onClickFiles}
 					updateFiles={props.updateFiles}
+					download={props.download}
 				/>
 			</SplitPane>
 		</div>

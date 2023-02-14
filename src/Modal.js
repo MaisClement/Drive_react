@@ -8,7 +8,7 @@ import add_directory from './img/add-directory.svg';
 import trash from './img/trash.svg';
 
 function Modal(props) {
-	const [cookies, setCookie, removeCookie] = useCookies(['show_ext']);
+	const [cookies, setCookie] = useCookies(['show_ext']);
 	const [textInput, setTextInput] = useState('');
 
 	switch (props.modal) {
@@ -149,7 +149,7 @@ function Modal(props) {
 								<span>Fermer</span>
 							</div>
 
-							<div className="small_fluent_btn red" style={{ width: 130 }} onClick={() => props.remove(props.path, textInput)}>
+							<div className="small_fluent_btn red" style={{ width: 130 }} onClick={() => props.remove(props.path, props.selectedRowIds)}>
 								<img className="svg" src={trash} alt="" />
 								<span>Supprimer</span>
 							</div>
@@ -173,7 +173,7 @@ function Modal(props) {
 								<span>Fermer</span>
 							</div>
 
-							<div className="small_fluent_btn red" style={{ width: 130 }} onClick={() => props.remove(props.path, textInput)}>
+							<div className="small_fluent_btn red" style={{ width: 130 }} onClick={() => props.remove(props.path, props.selectedRowIds)}>
 								<img className="svg" src={trash} alt="" />
 								<span>Supprimer</span>
 							</div>
@@ -202,7 +202,7 @@ function Modal(props) {
 								<span>Fermer</span>
 							</div>
 
-							<div className="small_fluent_btn blue" style={{ width: 100 }} onClick={() => props.rename(props.path, el.type !== 'directory' ? (el.name + '.' + el.type) : el.name , el.type !== 'directory' ? (textInput + '.' + el.type) : textInput)}>
+							<div className="small_fluent_btn blue" style={{ width: 130 }} onClick={() => props.rename(props.path, el.type !== 'directory' ? (el.name + '.' + el.type) : el.name, el.type !== 'directory' ? (textInput + '.' + el.type) : textInput)}>
 								<img className="svg" src={add_directory} alt="" />
 								<span>Renommer</span>
 							</div>
@@ -214,6 +214,56 @@ function Modal(props) {
 					Pas content
 				</div>
 			}
+
+		case 'upload':
+			return <div className='modal-back'>
+				<div className='small-modal'>
+					<h2>Que voulez vous envoyez ? </h2>
+					<div className="space"></div><br />
+
+					<div style={{ display: "flex" }}>
+						<div className="large_btn" onClick={() => props.setModal("upload_dir")}>
+							<img src="https://drive.hackernwar.com/view/type/folder.png" />
+							<br />
+							Dossier(s)
+						</div>
+						<div className="large_btn" onClick={() => props.setModal("upload_file")}>
+							<img src="https://drive.hackernwar.com/view/type/file.png" />
+							<br />
+							Fichier(s)
+						</div>
+					</div>
+
+					<div className='footer'>
+						<div className="small_fluent_btn" style={{ width: 100 }} onClick={() => props.setModal(null)}>
+							<img className="svg" src={del} alt="" />
+							<span>Fermer</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		case 'upload_dir':
+			return <div className='modal-back'>
+				<div className='modal'>
+					<h2>Envoi de dossier</h2>
+					<div className="space"></div><br />
+
+					<input type="file" onChange={props.handleFileChange} multiple/>
+
+					<div className='footer'>
+						<div className="small_fluent_btn" style={{ width: 100 }} onClick={() => props.setModal(null)}>
+							<img className="svg" src={del} alt="" />
+							<span>Fermer</span>
+						</div>
+
+						<div className="small_fluent_btn green" style={{ width: 130 }} onClick={() => props.upload()}>
+							<img className="svg" src={add_directory} alt="" />
+							<span>Envoyer</span>
+						</div>
+					</div>
+				</div>
+			</div>
 
 		default:
 			break;

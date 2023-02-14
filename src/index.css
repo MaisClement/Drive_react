@@ -20,7 +20,7 @@ body {
   }
 }
 
-@media (prefers-color-scheme: dark) { 
+@media (prefers-color-scheme: dark) {
   .svg {
     filter: invert(100%) sepia(93%) saturate(27%) hue-rotate(39deg) brightness(107%) contrast(107%);
   }

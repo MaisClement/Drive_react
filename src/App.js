@@ -27,6 +27,37 @@ function Header() {
 	);
 }
 
+const viewerTypes = [
+	'apng'	,
+	'avif'	,
+	'gif'	,
+	'jpg'	,
+	'jpeg'	,
+	'jfif'	,
+	'pjpeg'	,
+	'pjp'	,
+	'png'	,
+	'svg'	,
+	'webp'	,
+	'bmp'	,
+	'ico'	,
+	'cur'	,
+	'tif'	,
+	'tiff'	,
+];
+const videoTypes = [
+	'3gp'	,
+	'mpg'	,
+	'mpeg'	,
+	'mp4'	,
+	'm4v'	,
+	'm4p'	,
+	'ogv'	,
+	'ogg'	,
+	'mov'	,
+	'webm'	,
+];
+
 function App() {
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -36,13 +67,13 @@ function App() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [tree, setTree] = useState([]);
 	const [files, setFiles] = useState([]);
-	const [file, setFile] = useState([]);
+	const [file] = useState([]);
 	const [sizes, setSizes] = useState([30, 100, '100%']);
 	const [selectedRowIds, setSelectedRowIds] = useState({});
 	const [current, setCurrent] = useState(null);
 	const [modal, setModal] = useState(null);
 	const [alert, setAlert] = useState({});
-	
+
 	const [storage, setStorage] = useState(null);
 
 	React.useEffect(() => {
@@ -68,15 +99,20 @@ function App() {
 
 				const temp_path = data.path;
 				setPath(temp_path[0] === "/" ? temp_path.substring(1) : temp_path);
-				setFiles(data.files);
 				setCurrent(null);
 				setIsLoading(false);
+
+				if (typeof data.file !== 'undefined') {
+					open(data.path, data.file.name, data.file.type)
+				} else {
+					setFiles(data.files);
+				}
 
 				if (decodeURIComponent(location.pathname).replace("/", "") != decodeURIComponent(data.path)) {
 					navigate(data.path);
 				}
 			})
-			.catch(err => {
+			.catch(() => {
 				// 
 			});
 	}
@@ -95,7 +131,7 @@ function App() {
 			.then(data => {
 				setTree(data.files);
 			})
-			.catch(err => {
+			.catch(() => {
 				// 
 			});
 	}
@@ -109,21 +145,22 @@ function App() {
 		})
 			.then(res => {
 				if (res.status === 401) {
-					setAlert({title: 'Permission insuffisante', message: 'Vous n\'êtes pas autorisé à créer, modifier ou supprimer des élements.'})
+					setAlert({ title: 'Permission insuffisante', message: 'Vous n\'êtes pas autorisé à créer, modifier ou supprimer des élements.' })
 					setModal('alert');
 					throw "exit";
 				} else if (res.status !== 200) {
-					setAlert({title: 'Création du dossier impossible', message: 'Une erreur s\'est produite.'})
+					setAlert({ title: 'Création du dossier impossible', message: 'Une erreur s\'est produite.' })
 					setModal('alert');
 					throw "exit";
 				}
 				res.json()
 			})
-			.then(data => {
+			.then(() => {
 				setModal(null);
-				getFiles(path + name);
+				//getFiles(path + name);
+				getFiles(path);
 			})
-			.catch(err => {
+			.catch(() => {
 				// 
 			});
 	}
@@ -136,14 +173,13 @@ function App() {
 			.then(data => {
 				setStorage(data);
 			})
-			.catch(err => {
+			.catch(() => {
 				// 
 			});
 	}
 	function onClickFiles(row) {
 		if (row.original.type === 'directory') {
 			if (current === row) {
-				//getFiles(`${path}/${row.original.name}`);
 				goToFiles(`${path}/${row.original.name}`);
 				setCurrent(null);
 
@@ -158,8 +194,13 @@ function App() {
 			}
 		} else {
 			if (current === row) {
-				console.log('oui');
-				setCurrent(null);
+				if (viewerTypes.includes(row.original.type)) {
+					//VIEWER
+					console.log('oui');
+				} else {
+					downloadFile(path, `${row.original.name}.${row.original.type}`);
+					setCurrent(null);
+				}
 
 			} else {
 				if (current === null) {
@@ -179,23 +220,77 @@ function App() {
 		})
 			.then(res => {
 				if (res.status === 401) {
-					setAlert({title: 'Permission insuffisante', message: 'Vous n\'êtes pas autorisé à créer, modifier ou supprimer des élements.'})
+					setAlert({ title: 'Permission insuffisante', message: 'Vous n\'êtes pas autorisé à créer, modifier ou supprimer des élements.' })
 					setModal('alert');
 					throw "exit";
 				} else if (res.status !== 200) {
-					setAlert({title: 'Renommage impossible', message: 'Une erreur s\'est produite.'})
+					setAlert({ title: 'Renommage impossible', message: 'Une erreur s\'est produite.' })
 					setModal('alert');
 					throw "exit";
 				}
 				res.json()
 			})
-			.then(data => {
+			.then(() => {
 				setModal(null);
 				updateFiles();
 			})
-			.catch(err => {
+			.catch(() => {
 				// 
 			});
+	}
+
+	function remove(path, selectedfiles) {
+		const ids = Object.keys(selectedfiles);
+		ids.forEach(async id => {
+			const filename = files[id].type === 'directory'
+				? `${files[id].name}`
+				: `${files[id].name}.${files[id].type}`
+			const url = base_url + "remove.php?p=" + path + "&name=" + filename;
+
+			await fetch(url, {
+				method: 'get'
+			})
+				.then(res => {
+					if (res.status === 401) {
+						setAlert({ title: 'Permission insuffisante', message: 'Vous n\'êtes pas autorisé à créer, modifier ou supprimer des élements.' })
+						setModal('alert');
+						throw "exit";
+					} else if (res.status !== 200) {
+						setAlert({ title: 'Suppression impossible', message: 'Une erreur s\'est produite.' })
+						setModal('alert');
+						throw "exit";
+					}
+					res.json()
+				})
+				.then(() => {
+					setModal(null);
+					updateFiles();
+				})
+				.catch(() => {
+					// 
+				});
+		});
+	}
+	function download() {
+		const id = Object.keys(selectedRowIds);
+		if (files[id].type !== "directory") {
+			downloadFile(path, `${files[id].name}.${files[id].type}`)
+		} else {
+			downloadFile(path, `${files[id].name}`)
+		}
+	}
+	function open(path, name, type) {
+		if (viewerTypes.includes(type)) {
+			// VIEWER
+			// downloadFile(path, `${name}.${type}`);
+		} else {
+			var url = `https://drive.hackernwar.com/?ctrl=download&p=${path}/${name}.${type}`;
+			window.history.replaceState(`${name}.${type}`, '', url)
+		}
+	}
+	function downloadFile(path, name) {
+		var url = `https://drive.hackernwar.com/?ctrl=download&p=${path}/${name}`;
+		window.open(url);
 	}
 
 	return (
@@ -216,8 +311,9 @@ function App() {
 				onClickFiles={onClickFiles}
 				getFiles={getFiles}
 				updateFiles={updateFiles}
+				download={download}
 
-				storage = {storage}
+				storage={storage}
 			/>
 			<Modal
 				path={path}
@@ -230,9 +326,10 @@ function App() {
 				selectedRowIds={selectedRowIds}
 				current={current}
 
-				storage = {storage}
-				newDirectory = {newDirectory}
-				rename = {rename}
+				storage={storage}
+				newDirectory={newDirectory}
+				rename={rename}
+				remove={remove}
 			/>
 		</div>
 	);
