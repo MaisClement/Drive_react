@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
+import del from './img/delete.svg';
 import Explorer from './Explorer';
+import Viewer from './Viewer';
 import Modal from './Modal';
 
 import './css/color.css';
@@ -9,8 +11,10 @@ import './css/form.css';
 import './css/App.css';
 import './css/Header.css';
 import './css/Explorer.css';
+import './css/Viewer.css';
 
-function Header() {
+function Header(props) {
+	const { isViewMode, setViewMode } = props;
 	return (
 		<header>
 			<div style={{ width: '100px' }}>
@@ -22,46 +26,59 @@ function Header() {
 				</Link>
 				<span className='title'>Drive</span>
 			</div>
+			{
+				isViewMode &&
+				<div className='viewer-back'>
+					<img
+						src={del}
+						alt="Delete"
+						className='light-svg'
+						onClick={() => setViewMode(false)}
+						/>
+				</div>
+			}
 		</header>
 
 	);
 }
 
 const viewerTypes = [
-	'apng'	,
-	'avif'	,
-	'gif'	,
-	'jpg'	,
-	'jpeg'	,
-	'jfif'	,
-	'pjpeg'	,
-	'pjp'	,
-	'png'	,
-	'svg'	,
-	'webp'	,
-	'bmp'	,
-	'ico'	,
-	'cur'	,
-	'tif'	,
-	'tiff'	,
+	'apng',
+	'avif',
+	'gif',
+	'jpg',
+	'jpeg',
+	'jfif',
+	'pjpeg',
+	'pjp',
+	'png',
+	'svg',
+	'webp',
+	'bmp',
+	'ico',
+	'cur',
+	'tif',
+	'tiff',
 ];
 const videoTypes = [
-	'3gp'	,
-	'mpg'	,
-	'mpeg'	,
-	'mp4'	,
-	'm4v'	,
-	'm4p'	,
-	'ogv'	,
-	'ogg'	,
-	'mov'	,
-	'webm'	,
+	'3gp',
+	'mpg',
+	'mpeg',
+	'mp4',
+	'm4v',
+	'm4p',
+	'ogv',
+	'ogg',
+	'mov',
+	'webm',
 ];
 
 function App() {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const base_url = "https://drive.hackernwar.com/";
+
+	const [isViewMode, setViewMode] = useState(false);
 
 	const [path, setPath] = useState(location.pathname);
 	const [isLoading, setIsLoading] = useState(false);
@@ -196,7 +213,7 @@ function App() {
 			if (current === row) {
 				if (viewerTypes.includes(row.original.type)) {
 					//VIEWER
-					console.log('oui');
+					setViewMode(true);
 				} else {
 					downloadFile(path, `${row.original.name}.${row.original.type}`);
 					setCurrent(null);
@@ -295,26 +312,38 @@ function App() {
 
 	return (
 		<div className="App">
-			<Header />
-			<Explorer
-				path={path}
-				files={files}
-				tree={tree}
-				isLoading={isLoading}
-				sizes={sizes}
-				setSizes={setSizes}
-				selectedRowIds={selectedRowIds}
-				current={current}
-				modal={modal}
-				setModal={setModal}
-				setSelectedRowIds={setSelectedRowIds}
-				onClickFiles={onClickFiles}
-				getFiles={getFiles}
-				updateFiles={updateFiles}
-				download={download}
-
-				storage={storage}
+			<Header
+				isViewMode={isViewMode}
+				setViewMode={setViewMode}
 			/>
+			{
+				isViewMode
+					? <Viewer
+						current={current}
+						setModal={setModal}
+						path={path}
+						files={files}
+					/>
+					: <Explorer
+						path={path}
+						files={files}
+						tree={tree}
+						isLoading={isLoading}
+						sizes={sizes}
+						setSizes={setSizes}
+						selectedRowIds={selectedRowIds}
+						current={current}
+						modal={modal}
+						setModal={setModal}
+						setSelectedRowIds={setSelectedRowIds}
+						onClickFiles={onClickFiles}
+						getFiles={getFiles}
+						updateFiles={updateFiles}
+						download={download}
+
+						storage={storage}
+					/>
+			}
 			<Modal
 				path={path}
 				files={files}

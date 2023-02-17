@@ -1,0 +1,19 @@
+.viewer {
+  height: 100vh;
+  background-color: #222222;
+  color: #fff;
+}
+
+.viewer .info {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 10px;
+}
+
+.viewer-back {
+  cursor: pointer;
+  position: fixed;
+  width: 50px;
+  right: 5px;
+}
