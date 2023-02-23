@@ -249,7 +249,14 @@ function Modal(props) {
 					<h2>Envoi de dossier</h2>
 					<div className="space"></div><br />
 
-					<input type="file" onChange={props.handleFileChange} multiple/>
+					<input type="file" onChange={props.handleFileChange} multiple />
+
+
+					{props.filesInInput.map((file) => (
+						<p key={file.name}>
+							{file.name}
+						</p>
+						))}
 
 					<div className='footer'>
 						<div className="small_fluent_btn" style={{ width: 100 }} onClick={() => props.setModal(null)}>

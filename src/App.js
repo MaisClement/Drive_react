@@ -34,7 +34,7 @@ function Header(props) {
 						alt="Delete"
 						className='light-svg'
 						onClick={() => setViewMode(false)}
-						/>
+					/>
 				</div>
 			}
 		</header>
@@ -84,6 +84,9 @@ function App() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [tree, setTree] = useState([]);
 	const [files, setFiles] = useState([]);
+
+	const [filesInInput, setFilesInInput] = useState([]);
+
 	const [file] = useState([]);
 	const [sizes, setSizes] = useState([30, 100, '100%']);
 	const [selectedRowIds, setSelectedRowIds] = useState({});
@@ -288,6 +291,15 @@ function App() {
 				});
 		});
 	}
+	function handleFileChange(e) {
+		const files = e.target.files;
+
+		const list = filesInInput;
+		for (let i = 0; i < files.length; i++){  
+			list.push(files[i]); 
+		}
+		setFilesInInput(list);
+	}
 	function download() {
 		const id = Object.keys(selectedRowIds);
 		if (files[id].type !== "directory") {
@@ -359,6 +371,9 @@ function App() {
 				newDirectory={newDirectory}
 				rename={rename}
 				remove={remove}
+				handleFileChange={handleFileChange}
+				filesInInput={filesInInput}
+
 			/>
 		</div>
 	);
