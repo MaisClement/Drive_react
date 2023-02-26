@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import del from './img/delete.svg';
 import Explorer from './Explorer';
@@ -20,8 +20,8 @@ function Header(props) {
 			<div style={{ width: '100px' }}>
 				<Link to={'./'}>
 					<img
-						src="https://drive.hackernwar.com/view/img/ftp.png"
-						alt="Logo"
+						src='https://drive.hackernwar.com/view/img/ftp.png'
+						alt='Logo'
 					/>
 				</Link>
 				<span className='title'>Drive</span>
@@ -31,7 +31,7 @@ function Header(props) {
 				<div className='viewer-back'>
 					<img
 						src={del}
-						alt="Delete"
+						alt='Delete'
 						className='light-svg'
 						onClick={() => setViewMode(false)}
 					/>
@@ -76,7 +76,7 @@ const videoTypes = [
 function App() {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const base_url = "https://drive.hackernwar.com/";
+	const base_url = 'https://drive.hackernwar.com/';
 
 	const [isViewMode, setViewMode] = useState(false);
 
@@ -109,7 +109,7 @@ function App() {
 	}, []);
 
 	function getFiles(path) {
-		const url = base_url + "get_files.php?p=" + path;
+		const url = base_url + 'get_files.php?p=' + path;
 		setIsLoading(true);
 		fetch(url, {
 			method: 'get'
@@ -118,17 +118,17 @@ function App() {
 			.then(data => {
 
 				const temp_path = data.path;
-				setPath(temp_path[0] === "/" ? temp_path.substring(1) : temp_path);
+				setPath(temp_path[0] === '/' ? temp_path.substring(1) : temp_path);
 				setCurrent(null);
 				setIsLoading(false);
 
 				if (typeof data.file !== 'undefined') {
-					open(data.path, data.file.name, data.file.type)
+					open(data.path, data.file.name, data.file.type);
 				} else {
 					setFiles(data.files);
 				}
 
-				if (decodeURIComponent(location.pathname).replace("/", "") != decodeURIComponent(data.path)) {
+				if (decodeURIComponent(location.pathname).replace('/', '') != decodeURIComponent(data.path)) {
 					navigate(data.path);
 				}
 			})
@@ -137,13 +137,13 @@ function App() {
 			});
 	}
 	function updateFiles() {
-		getFiles(location.pathname)
+		getFiles(location.pathname);
 	}
 	function goToFiles(p) {
 		navigate(p);
 	}
 	function getDirectory(path, id = 0) {
-		const url = base_url + "get_directory.php?p=" + path + "&id=" + id;
+		const url = base_url + 'get_directory.php?p=' + path + '&id=' + id;
 		fetch(url, {
 			method: 'get'
 		})
@@ -159,21 +159,21 @@ function App() {
 		if (name.substring(0, 1) !== '/') {
 			name = `/${name}`;
 		}
-		const url = base_url + "new_directory.php?p=" + path + "&name=" + name;
+		const url = base_url + 'new_directory.php?p=' + path + '&name=' + name;
 		fetch(url, {
 			method: 'get'
 		})
 			.then(res => {
 				if (res.status === 401) {
-					setAlert({ title: 'Permission insuffisante', message: 'Vous n\'êtes pas autorisé à créer, modifier ou supprimer des élements.' })
+					setAlert({ title: 'Permission insuffisante', message: 'Vous n\'êtes pas autorisé à créer, modifier ou supprimer des élements.' });
 					setModal('alert');
-					throw "exit";
+					throw 'exit';
 				} else if (res.status !== 200) {
-					setAlert({ title: 'Création du dossier impossible', message: 'Une erreur s\'est produite.' })
+					setAlert({ title: 'Création du dossier impossible', message: 'Une erreur s\'est produite.' });
 					setModal('alert');
-					throw "exit";
+					throw 'exit';
 				}
-				res.json()
+				res.json();
 			})
 			.then(() => {
 				setModal(null);
@@ -185,7 +185,7 @@ function App() {
 			});
 	}
 	function getStorageInfo() {
-		const url = base_url + "get_storage_info.php";
+		const url = base_url + 'get_storage_info.php';
 		fetch(url, {
 			method: 'get'
 		})
@@ -234,21 +234,21 @@ function App() {
 		}
 	}
 	function rename(path, old_name, new_name) {
-		const url = base_url + "rename.php?p=" + path + "&old=" + old_name + "&new=" + new_name;
+		const url = base_url + 'rename.php?p=' + path + '&old=' + old_name + '&new=' + new_name;
 		fetch(url, {
 			method: 'get'
 		})
 			.then(res => {
 				if (res.status === 401) {
-					setAlert({ title: 'Permission insuffisante', message: 'Vous n\'êtes pas autorisé à créer, modifier ou supprimer des élements.' })
+					setAlert({ title: 'Permission insuffisante', message: 'Vous n\'êtes pas autorisé à créer, modifier ou supprimer des élements.' });
 					setModal('alert');
-					throw "exit";
+					throw 'exit';
 				} else if (res.status !== 200) {
-					setAlert({ title: 'Renommage impossible', message: 'Une erreur s\'est produite.' })
+					setAlert({ title: 'Renommage impossible', message: 'Une erreur s\'est produite.' });
 					setModal('alert');
-					throw "exit";
+					throw 'exit';
 				}
-				res.json()
+				res.json();
 			})
 			.then(() => {
 				setModal(null);
@@ -264,23 +264,23 @@ function App() {
 		ids.forEach(async id => {
 			const filename = files[id].type === 'directory'
 				? `${files[id].name}`
-				: `${files[id].name}.${files[id].type}`
-			const url = base_url + "remove.php?p=" + path + "&name=" + filename;
+				: `${files[id].name}.${files[id].type}`;
+			const url = base_url + 'remove.php?p=' + path + '&name=' + filename;
 
 			await fetch(url, {
 				method: 'get'
 			})
 				.then(res => {
 					if (res.status === 401) {
-						setAlert({ title: 'Permission insuffisante', message: 'Vous n\'êtes pas autorisé à créer, modifier ou supprimer des élements.' })
+						setAlert({ title: 'Permission insuffisante', message: 'Vous n\'êtes pas autorisé à créer, modifier ou supprimer des élements.' });
 						setModal('alert');
-						throw "exit";
+						throw 'exit';
 					} else if (res.status !== 200) {
-						setAlert({ title: 'Suppression impossible', message: 'Une erreur s\'est produite.' })
+						setAlert({ title: 'Suppression impossible', message: 'Une erreur s\'est produite.' });
 						setModal('alert');
-						throw "exit";
+						throw 'exit';
 					}
-					res.json()
+					res.json();
 				})
 				.then(() => {
 					setModal(null);
@@ -302,10 +302,10 @@ function App() {
 	}
 	function download() {
 		const id = Object.keys(selectedRowIds);
-		if (files[id].type !== "directory") {
-			downloadFile(path, `${files[id].name}.${files[id].type}`)
+		if (files[id].type !== 'directory') {
+			downloadFile(path, `${files[id].name}.${files[id].type}`);
 		} else {
-			downloadFile(path, `${files[id].name}`)
+			downloadFile(path, `${files[id].name}`);
 		}
 	}
 	function open(path, name, type) {
@@ -314,7 +314,7 @@ function App() {
 			// downloadFile(path, `${name}.${type}`);
 		} else {
 			var url = `https://drive.hackernwar.com/?ctrl=download&p=${path}/${name}.${type}`;
-			window.history.replaceState(`${name}.${type}`, '', url)
+			window.history.replaceState(`${name}.${type}`, '', url);
 		}
 	}
 	function downloadFile(path, name) {
@@ -323,7 +323,7 @@ function App() {
 	}
 
 	return (
-		<div className="App">
+		<div className='App'>
 			<Header
 				isViewMode={isViewMode}
 				setViewMode={setViewMode}

@@ -1,25 +1,25 @@
 import React from 'react';
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
-import { useTable, useSortBy, useRowSelect } from 'react-table'
+import { useTable, useSortBy, useRowSelect } from 'react-table';
 import { sizeFormat, timeConverter } from './function';
 import { useCookies } from 'react-cookie';
 
 const IndeterminateCheckbox = React.forwardRef(
 	({ indeterminate, ...rest }, ref) => {
-		const defaultRef = React.useRef()
-		const resolvedRef = ref || defaultRef
+		const defaultRef = React.useRef();
+		const resolvedRef = ref || defaultRef;
 
 		React.useEffect(() => {
-			resolvedRef.current.indeterminate = indeterminate
-		}, [resolvedRef, indeterminate])
+			resolvedRef.current.indeterminate = indeterminate;
+		}, [resolvedRef, indeterminate]);
 
 		return (
 			<>
-				<input type="checkbox" ref={resolvedRef} {...rest} />
+				<input type='checkbox' ref={resolvedRef} {...rest} />
 			</>
-		)
+		);
 	}
-)
+);
 
 function Files_table({ files, setSelectedRowIds, onClickFiles }) {
 	const data = files;
@@ -34,7 +34,7 @@ function Files_table({ files, setSelectedRowIds, onClickFiles }) {
 			{
 				Header: 'Name',
 				accessor: 'name',
-				Cell: ({ row }) => cookies['show_ext'] === "true" && row.original.type !== "directory"
+				Cell: ({ row }) => cookies['show_ext'] === 'true' && row.original.type !== 'directory'
 					? String(`${row.original.name}.${row.original.type}`)
 					: String(row.original.name)
 			},
@@ -54,7 +54,7 @@ function Files_table({ files, setSelectedRowIds, onClickFiles }) {
 			}
 		],
 		[]
-	)
+	);
 
 	const {
 		getTableProps,
@@ -87,9 +87,9 @@ function Files_table({ files, setSelectedRowIds, onClickFiles }) {
 					),
 				},
 				...columns,
-			])
+			]);
 		}
-	)
+	);
 
 	React.useEffect(() => setSelectedRowIds(selectedRowIds), [
 		setSelectedRowIds,
@@ -118,7 +118,7 @@ function Files_table({ files, setSelectedRowIds, onClickFiles }) {
 			</thead>
 			<tbody {...getTableBodyProps()}>
 				{rows.map(row => {
-					prepareRow(row)
+					prepareRow(row);
 					return (
 						<tr className={row.isSelected ? 'selected' : null} {...row.getRowProps()}>
 							{row.cells.map(cell => {
@@ -132,15 +132,15 @@ function Files_table({ files, setSelectedRowIds, onClickFiles }) {
 											cell.render('Cell')
 										}
 									</td>
-								)
+								);
 							})}
 						</tr>
-					)
+					);
 
 				})}
 			</tbody>
 		</table>
-	)
+	);
 }
 
 export default Files_table;

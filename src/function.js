@@ -49,12 +49,12 @@ function Toogle(props) {
 			props.onChange(!checked);
 		}
 		setChecked(!checked);
-	};
+	}
 
 	return (
 		<span>
-			<span className={checked ? "toggle-control checked" : "toggle-control"} onClick={() => handleChange()}>
-				<span className="control" />
+			<span className={checked ? 'toggle-control checked' : 'toggle-control'} onClick={() => handleChange()}>
+				<span className='control' />
 			</span>
 		</span>
 	);

@@ -1,10 +1,10 @@
 import React from 'react';
 import Files_table from './Files_table';
 import Button from './Explorer_button';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 
 
-import 'split-pane-react/esm/themes/default.css'
+import 'split-pane-react/esm/themes/default.css';
 import './css/App.css';
 import './css/Header.css';
 
@@ -18,17 +18,17 @@ import right from './img/right.svg';
 function Path(props) {
 	const path = props.path.split('/');
 	return (
-		<div className="path">
-			<Link to={"./"} className="path-link">
+		<div className='path'>
+			<Link to={'./'} className='path-link'>
 				Accueil
 			</Link>
 			{
-				props.path !== ""
+				props.path !== ''
 					? <>
 						{path.map((p, i) => (
 							<>
-								<span className="path-space">{'>'}</span>
-								<Link to={props.path.substring(0, props.path.indexOf(p) + p.length + 1)} className="path-link">
+								<span className='path-space'>{'>'}</span>
+								<Link to={props.path.substring(0, props.path.indexOf(p) + p.length + 1)} className='path-link'>
 									{p}
 								</Link>
 							</>
@@ -45,13 +45,13 @@ function ExplorerBody(props) {
 
 	return (
 		<section>
-			<div className="options">
-				<div className="small_fluent_btn" onClick={() => props.setModal('new_directory')}>
-					<img className="svg" src={add_directory} />
+			<div className='options'>
+				<div className='small_fluent_btn' onClick={() => props.setModal('new_directory')}>
+					<img className='svg' src={add_directory} />
 				</div>
-				<div className="small_fluent_btn" onClick={() => props.setModal('upload')}>
-					<img className="svg" src={upload} />
-					<i id="loader3" className="loader-3 is-hidden" />
+				<div className='small_fluent_btn' onClick={() => props.setModal('upload')}>
+					<img className='svg' src={upload} />
+					<i id='loader3' className='loader-3 is-hidden' />
 				</div>
 
 				<Button
@@ -67,22 +67,22 @@ function ExplorerBody(props) {
 			</div>
 
 			<div className='nav'>
-				<div className="small_fluent_btn" onClick={() => navigate(-1)}>
-					<img className="svg" src={back} />
+				<div className='small_fluent_btn' onClick={() => navigate(-1)}>
+					<img className='svg' src={back} />
 				</div>
 
-				<div className="small_fluent_btn" onClick={() => navigate(1)}>
-					<img className="svg" src={right} />
+				<div className='small_fluent_btn' onClick={() => navigate(1)}>
+					<img className='svg' src={right} />
 				</div>
-				<div className="small_fluent_btn" onClick={() => props.updateFiles()}>
-					<img className="svg" src={update} />
+				<div className='small_fluent_btn' onClick={() => props.updateFiles()}>
+					<img className='svg' src={update} />
 				</div>
 				<Path
 					path={props.path}
 				/>
 			</div>
 
-			<div className="explorer-space"></div>
+			<div className='explorer-space'></div>
 			<i className={props.isLoading ? 'loader-4' : 'loader-4 is-hidden'}></i>
 
 			<div className='files'>
@@ -95,6 +95,6 @@ function ExplorerBody(props) {
 			</div>
 		</section>
 	);
-};
+}
 
 export default ExplorerBody;

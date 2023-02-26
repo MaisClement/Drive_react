@@ -2,13 +2,13 @@ import React from 'react';
 import SplitPane, { Pane } from 'split-pane-react';
 import { sizeFormat, timeConverter } from './function';
 
-import 'split-pane-react/esm/themes/default.css'
+import 'split-pane-react/esm/themes/default.css';
 import './css/App.css';
 import './css/Header.css';
 
 function Viewer(props) {
 	const { current } = props;
-    console.log(current);
+	console.log(current);
 	return (
 		<div className='viewer'>
 

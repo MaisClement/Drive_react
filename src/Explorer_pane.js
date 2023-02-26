@@ -1,10 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState } from 'react';
 import { SpinnerCircularFixed } from 'spinners-react';
-import { IoMdArrowDropright } from "react-icons/io";
-import TreeView from "react-accessible-treeview";
+import { IoMdArrowDropright } from 'react-icons/io';
+import TreeView from 'react-accessible-treeview';
 import { sizeFormat } from './function';
 
-import 'split-pane-react/esm/themes/default.css'
+import 'split-pane-react/esm/themes/default.css';
 import './css/App.css';
 import './css/Header.css';
 
@@ -38,7 +38,7 @@ function MultiSelectCheckboxAsync(props) {
 			}
 
 			setData((value) => {
-				const url = "https://drive.hackernwar.com/get_directory_child.php?p=" + element.name + "&id=" + element.id;
+				const url = 'https://drive.hackernwar.com/get_directory_child.php?p=' + element.name + '&id=' + element.id;
 				fetch(url, {
 					method: 'get'
 				})
@@ -53,9 +53,9 @@ function MultiSelectCheckboxAsync(props) {
 								id: value.length + dat.length,
 								parent: element.id,
 								isBranch: data.files[i].isBranch,
-							})
+							});
 						}
-						updateTreeData(value, element.id, dat)
+						updateTreeData(value, element.id, dat);
 					})
 					.catch(() => {
 						// 
@@ -81,7 +81,7 @@ function MultiSelectCheckboxAsync(props) {
 
 			// Clearing aria-live region so loaded node alerts no longer appear in DOM
 			setTimeout(() => {
-				el && (el.innerHTML = "");
+				el && (el.innerHTML = '');
 			}, 5000);
 		}
 	};
@@ -89,10 +89,10 @@ function MultiSelectCheckboxAsync(props) {
 	return (
 		<>
 			<div>
-				<div className="checkbox">
+				<div className='checkbox'>
 					<TreeView
 						data={data}
-						aria-label="Checkbox tree"
+						aria-label='Checkbox tree'
 						onLoadData={wrappedOnLoadData}
 						multiSelect
 						propagateSelect
@@ -109,7 +109,7 @@ function MultiSelectCheckboxAsync(props) {
 							const branchNode = (isExpanded, element) => {
 								return isExpanded && element.children.length === 0 ? (
 									<>
-										<SpinnerCircularFixed size={16} thickness={200} speed={100} color="rgba(130, 2, 130, 1)" secondaryColor="rgba(18, 18, 18, 1)" />
+										<SpinnerCircularFixed size={16} thickness={200} speed={100} color='rgba(130, 2, 130, 1)' secondaryColor='rgba(18, 18, 18, 1)' />
 									</>
 								) : (
 									<ArrowIcon isOpen={isExpanded} />
@@ -121,8 +121,8 @@ function MultiSelectCheckboxAsync(props) {
 									style={{ paddingLeft: 15 * (level - 1) }}
 								>
 									{isBranch && branchNode(isExpanded, element)}
-									<img src={isExpanded ? opened_directory : directory} alt="" />
-									<span className="name">{element.name}</span>
+									<img src={isExpanded ? opened_directory : directory} alt='' />
+									<span className='name'>{element.name}</span>
 								</div>
 							);
 						}}
@@ -134,7 +134,7 @@ function MultiSelectCheckboxAsync(props) {
 }
 
 const ArrowIcon = ({ isOpen }) => {
-	return <IoMdArrowDropright style={isOpen ? { "transform": "rotate(90deg)" } : null} className="tree-arrow" />;
+	return <IoMdArrowDropright style={isOpen ? { 'transform': 'rotate(90deg)' } : null} className='tree-arrow' />;
 };
 
 function ExplorerPane(props) {
@@ -147,7 +147,7 @@ function ExplorerPane(props) {
 						data={props.tree}
 					/>
 					: <div className='center'>
-						<SpinnerCircularFixed size={50} thickness={100} speed={100} color="rgba(130, 2, 130, 1)" secondaryColor="rgba(18, 18, 18, 1)" />
+						<SpinnerCircularFixed size={50} thickness={100} speed={100} color='rgba(130, 2, 130, 1)' secondaryColor='rgba(18, 18, 18, 1)' />
 					</div>
 			}
 
@@ -157,7 +157,7 @@ function ExplorerPane(props) {
 				<img
 					src={settings}
 					className='svg'
-					alt="Paramètres"
+					alt='Paramètres'
 				/>
 				<span>Paramètres</span>
 			</button>
@@ -166,7 +166,7 @@ function ExplorerPane(props) {
 				<img
 					src={storage}
 					className='svg'
-					alt="Stockage"
+					alt='Stockage'
 				/>
 				{
 					props.storage === null || props.storage === undefined
@@ -179,6 +179,6 @@ function ExplorerPane(props) {
 
 		</div>
 	);
-};
+}
 
 export default ExplorerPane;
