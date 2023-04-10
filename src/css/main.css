@@ -1,43 +1,63 @@
-/* --- Fluent BTN --- */
-
-.small_fluent_btn {
-  border-radius: 10px;
-  cursor: pointer;
-  border: 2px solid var(--transparent);
-  display: inline-block;
-  width: 39px;
-  margin-bottom: 1px;
+body {
+  overflow: hidden;
 }
 
-.small_fluent_btn:active {
-  margin-top: 1px;
-  margin-bottom: 0;
+table {
+  display: block;
+  max-height: calc(100vh - 190px);
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
-.small_fluent_btn span {
-  margin-left: 10px;
-  position: relative;
-  top: -10px;
-  color: var(--text);
+thead,
+tbody {
+  width: 100%;
+  display: inline-table;
 }
 
-.small_fluent_btn img {
-  max-width: 30px;
-  margin-top: 5px;
-  margin-left: 5px;
+.upload_header {
+  background-color: var(--blue-primary);
+  height: 50px;
+  padding: 5px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.small_fluent_btn:hover,
-.small_fluent_btn:active,
-.small_fluent_btn:focus {
-  background-color: #0000000a;
-  border: 2px solid #4f474e61;
+.upload_header>* {
+  z-index: 5;
+  font-size: 18px;
+}
+
+.upload_perc {
+  background-color: var(--blue-high);
+}
+
+.upload_success {
+  background-color: var(--green-high);
+  width: 100%;
+  transition: all .5s ease;
+}
+
+.upload_perc,
+.upload_success {
+  height: 50px;
+  padding: 5px;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  transition: all .5s ease;
 }
 
 /* --- Path --- */
 
 .path {
-  border-radius: 10px;
+  border-radius: 5px;
   cursor: pointer;
   border: 2px solid var(--transparent);
   display: inline-block;
@@ -193,6 +213,8 @@
   width: 2px;
   height: 30px;
   display: inline-block;
+  position: relative;
+  top: 5px;
 }
 
 /* --- --- */
@@ -293,90 +315,55 @@ li {
   margin-left: 10px;
 }
 
-
-
-.modal-back {
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(30, 30, 30, 0.8);
-  backdrop-filter: blur(2px);
-}
-
-.modal {
-  display: block;
+.progress-bck {
+  background-color: var(--acrylic-light);
+  border-radius: 5px;
+  float: left;
+  height: 1vmin;
   position: relative;
-
-  top: 25vh;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  width: calc(100vw - 40px);
-  max-width: 500px;
-  height: calc(100vh - 40px);
-  max-height: 450px;
-
-  margin: auto;
-  padding: 20px;
-
-  background-color: var(--body);
-  border-radius: 10px;
-  box-shadow: #82028290 0px 7px 29px 0px;
+  width: 100%
 }
-.mini-modal {
-  display: block;
+
+.progress {
+  background-color: #820282;
+  border-radius: 5px;
+  float: left;
+  height: 1vmin;
   position: relative;
-
-  top: 25vh;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  width: calc(100vw - 40px);
-  max-width: 500px;
-  height: calc(100vh - 40px);
-  max-height: 200px;
-
-  margin: auto;
-  padding: 20px;
-
-  background-color: var(--body);
-  border-radius: 10px;
-  box-shadow: #82028290 0px 7px 29px 0px;
+  top: -1vmin;
+  transition: all .5s;
+  width: 0
 }
-.small-modal {
-  display: block;
+
+.mini_progress {
+  background-color: #820282;
+  border-radius: 5px;
+  float: left;
+  height: 0.5vmin;
   position: relative;
-
-  top: 25vh;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  width: calc(100vw - 40px);
-  max-width: 500px;
-  height: calc(100vh - 40px);
-  max-height: 300px;
-
-  margin: auto;
-  padding: 20px;
-
-  background-color: var(--body);
-  border-radius: 10px;
-  box-shadow: #82028290 0px 7px 29px 0px;
+  transition: all .5s;
+  width: 0
 }
-.modal .footer, .mini-modal .footer, .small-modal .footer {
-  position: absolute;
-  width: 90%;
-  bottom: 25px;
-  display: flex;
-  justify-content: space-between;
+
+.indeterminate {
+  animation: indeterminate 1.3s ease infinite
+}
+
+@keyframes indeterminate {
+  0% {
+    left: 0;
+    width: 0
+  }
+
+  50% {
+    left: 0;
+    width: 100%
+  }
+
+  100% {
+    left: 100%;
+    width: 0
+  }
 }
 
 h2 {
@@ -392,13 +379,13 @@ h2 {
   animation: storage-bar 1.5s ease;
 }
 
-.storage-round {
+.round_size {
+  border-radius: 5px;
   display: inline-block;
-  border-radius: 10px;
-  height: 2vmin;
+  height: 20px;
   position: relative;
   top: 3px;
-  width: 2vmin;
+  width: 20px;
 }
 
 @keyframes storage-bar {

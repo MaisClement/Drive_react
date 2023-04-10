@@ -1,14 +1,38 @@
 .viewer {
-  height: 100vh;
-  background-color: #222222;
+  height: calc(100vh - 60px);
+  background-color: #000;
   color: #fff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.viewer .info {
+.viewer .info:not(.video) {
   position: fixed;
   bottom: 0;
   left: 0;
   padding: 10px;
+  display: block;
+  width: 100%;
+
+  box-shadow: 0 0 60px 40px rgba(30, 30, 30, .78);
+  background-color: rgba(30, 30, 30, .7);
+  color: #fff;
+}
+
+.viewer .info.video {
+  position: fixed;
+  top: 60px;
+  bottom: none;
+  left: 0;
+  padding: 10px;
+  display: block;
+  width: 100%;
+
+  box-shadow: 0 0 60px 40px rgba(30, 30, 30, .78);
+  background-color: rgba(30, 30, 30, .7);
+  color: #fff;
 }
 
 .viewer-back {
@@ -16,4 +40,31 @@
   position: fixed;
   width: 50px;
   right: 5px;
+}
+
+.img {
+  max-height: calc(100vh - 60px);
+  max-width: 100vw;
+  display: block;
+}
+
+.back {
+  left: 0;
+}
+
+.forward {
+  right: 0;
+}
+
+.back,
+.forward,
+.info {
+  position: fixed;
+  transition: all .8s;
+}
+
+.back img,
+.forward img {
+  width: 70px;
+  transition: all .8s;
 }

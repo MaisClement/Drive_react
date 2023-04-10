@@ -1,0 +1,31 @@
+export const viewerTypes = [
+	'apng',
+	'avif',
+	'gif',
+	'jpg',
+	'jpeg',
+	'jfif',
+	'pjpeg',
+	'pjp',
+	'png',
+	'svg',
+	'webp',
+	'bmp',
+	'ico',
+	'cur',
+	'tif',
+	'tiff',
+];
+// eslint-disable-next-line no-unused-vars
+export const videoTypes = [
+	'3gp',
+	'mpg',
+	'mpeg',
+	'mp4',
+	'm4v',
+	'm4p',
+	'ogv',
+	'ogg',
+	'mov',
+	'webm',
+];

@@ -4,6 +4,8 @@ header {
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
   color: #fff;
   background-color: #820282;
+  z-index: 3;
+  position: relative;
 }
 
 header img {

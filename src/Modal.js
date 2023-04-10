@@ -7,25 +7,25 @@ import del from './img/delete.svg';
 import add_directory from './img/add-directory.svg';
 import trash from './img/trash.svg';
 
-function Modal(props) {
+function Modal({ modal, alert, storage, newDirectory, path, remove, removing, files, rename, upload, selectedRowIds, handleFileChange, filesInInput, setModal }) {
 	const [cookies, setCookie] = useCookies(['show_ext']);
 	const [textInput, setTextInput] = useState('');
 
-	switch (props.modal) {
+	switch (modal) {
 	case 'alert':
 		return <div className='modal-back'>
 			<div className='mini-modal'>
-				<h2>{props.alert.title ?? 'Avertissement'}</h2>
+				<h2>{alert.title ?? 'Avertissement'}</h2>
 				<div className='space'></div><br />
 				<span>
-					{props.alert.message ?? ''}
+					{alert.message ?? ''}
 				</span>
 
 				<div className='footer'>
-					<div className='small_fluent_btn' style={{ width: 100 }} onClick={() => props.setModal(null)}>
+					<button style={{ width: 100 }} onClick={() => setModal(null)}>
 						<img className='svg' src={del} alt='' />
 						<span>Fermer</span>
-					</div>
+					</button>
 				</div>
 			</div>
 		</div>;
@@ -36,35 +36,35 @@ function Modal(props) {
 				<h2>Stockage</h2>
 				<div className='space'></div><br />
 				{
-					props.storage === null || props.storage === undefined
+					storage === null || storage === undefined
 						? <div className='center'>
 							<SpinnerCircularFixed size={50} thickness={100} speed={100} color='rgba(130, 2, 130, 1)' secondaryColor='rgba(18, 18, 18, 1)' />
 						</div>
 						: <>
 							<div className='storage-bar' style={{ backgroundColor: 'var(--el-back-hover)' }}></div>
-							<div className='storage-bar' style={{ backgroundColor: '#820282', width: `${((props.storage.disk_size - props.storage.disk_free) / props.storage.disk_size) * 100}%`, top: '-1vmin' }}></div>
-							<div className='storage-bar' style={{ backgroundColor: '#ce03ce', width: `${(props.storage.all / props.storage.disk_size) * 100}%`, top: '-2vmin' }}></div>
-							<div className='storage-bar' style={{ backgroundColor: '#ce0346', width: `${(props.storage.usage / props.storage.disk_size) * 100}%`, top: '-3vmin' }}></div>
+							<div className='storage-bar' style={{ backgroundColor: '#820282', width: `${((storage.disk_size - storage.disk_free) / storage.disk_size) * 100}%`, top: '-1vmin' }}></div>
+							<div className='storage-bar' style={{ backgroundColor: '#ce03ce', width: `${(storage.all / storage.disk_size) * 100}%`, top: '-2vmin' }}></div>
+							<div className='storage-bar' style={{ backgroundColor: '#ce0346', width: `${(storage.usage / storage.disk_size) * 100}%`, top: '-3vmin' }}></div>
 
-							<span className='storage-round' style={{ backgroundColor: 'var(--el-back-hover)' }}></span> Total disque
-							<div>{sizeFormat(props.storage.disk_size)}</div><br />
+							<span className='round_size' style={{ backgroundColor: 'var(--el-back-hover)' }}></span> Total disque
+							<div>{sizeFormat(storage.disk_size)}</div><br />
 
-							<span className='storage-round' style={{ backgroundColor: '#820282' }}></span> Disponible
-							<div>{sizeFormat(props.storage.disk_size - props.storage.disk_free)} • <b>{Math.round(((props.storage.disk_size - props.storage.disk_free) / props.storage.disk_size) * 100)}%</b></div><br />
+							<span className='round_size' style={{ backgroundColor: '#820282' }}></span> Disponible
+							<div>{sizeFormat(storage.disk_size - storage.disk_free)} • <b>{Math.round(((storage.disk_size - storage.disk_free) / storage.disk_size) * 100)}%</b></div><br />
 
-							<span className='storage-round' style={{ backgroundColor: '#ce03ce' }}></span> Autres utilisateurs
-							<div>{sizeFormat((props.storage.all - props.storage.usage))} • <b>{Math.round(((props.storage.all - props.storage.usage) / props.storage.disk_size) * 100)}%</b></div><br />
+							<span className='round_size' style={{ backgroundColor: '#ce03ce' }}></span> Autres utilisateurs
+							<div>{sizeFormat((storage.all - storage.usage))} • <b>{Math.round(((storage.all - storage.usage) / storage.disk_size) * 100)}%</b></div><br />
 
-							<span className='storage-round' style={{ backgroundColor: '#ce0346' }}></span> Utilisé par vous
-							<div>{sizeFormat(props.storage.usage)} • <b>{Math.round((props.storage.usage / props.storage.disk_size) * 100)}%</b></div><br />
+							<span className='round_size' style={{ backgroundColor: '#ce0346' }}></span> Utilisé par vous
+							<div>{sizeFormat(storage.usage)} • <b>{Math.round((storage.usage / storage.disk_size) * 100)}%</b></div><br />
 						</>
 				}
 
 				<div className='footer'>
-					<div className='small_fluent_btn' style={{ width: 100 }} onClick={() => props.setModal(null)}>
+					<button style={{ width: 100 }} onClick={() => setModal(null)}>
 						<img className='svg' src={del} alt='' />
 						<span>Fermer</span>
-					</div>
+					</button>
 				</div>
 			</div>
 		</div>;
@@ -82,11 +82,18 @@ function Modal(props) {
 					<label>Afficher les extensions de fichier</label>
 				</div>
 
+				<br /><br /><br />
+
+				<h3>À propos </h3>
+				<a href='https://github.com/MaisClement/Drive' target='_blank' className='link_blue' rel='noreferrer'> Code source </a>
+				<br />
+				<a href='https://icones8.fr/' target='_blank' className='link_blue' rel='noreferrer'> Icones par Icones8 </a>
+
 				<div className='footer'>
-					<div className='small_fluent_btn' style={{ width: 100 }} onClick={() => props.setModal(null)}>
+					<button style={{ width: 100 }} onClick={() => setModal(null)}>
 						<img className='svg' src={del} alt='' />
 						<span>Fermer</span>
-					</div>
+					</button>
 				</div>
 			</div>
 		</div>;
@@ -97,28 +104,48 @@ function Modal(props) {
 				<h2>Nouveau dossier </h2>
 				<div className='space'></div><br />
 
-				<div className='fluent_form'>
-					<input type='text' placeholder='Nom de votre dossier' autoFocus onChange={(e) => setTextInput(e.target.value)} />
-				</div>
+				<input type='text' placeholder='Nom de votre dossier' autoFocus onChange={(e) => setTextInput(e.target.value)} />
 
 				<div className='footer'>
-					<div className='small_fluent_btn' style={{ width: 100 }} onClick={() => props.setModal(null)}>
+					<button style={{ width: 100 }} onClick={() => setModal(null)}>
 						<img className='svg' src={del} alt='' />
 						<span>Fermer</span>
-					</div>
+					</button>
 
-					<div className='small_fluent_btn blue' style={{ width: 100 }} onClick={() => props.newDirectory(props.path, textInput)}>
-						<img className='svg' src={add_directory} alt='' />
+					<button className='blue' style={{ width: 100 }} onClick={() => newDirectory(path, textInput)}>
+						<img className='svg_white' src={add_directory} alt='' />
 						<span>Créer</span>
-					</div>
+					</button>
+				</div>
+			</div>
+		</div>;
+
+	case 'removing':
+		return <div className='modal-back'>
+			<div className='mini-modal'>
+				<h2>Suppression </h2>
+				<div className='space'></div><br />
+
+				<p>
+						Suppression de vos fichiers en cours.
+				</p>
+
+				<div className='progress-bck'></div>
+				<div className='progress' style={{ width: `${removing}%` }}></div>
+
+				<div className='footer'>
+					<button style={{ width: 100 }} onClick={() => setModal(null)}>
+						<img className='svg' src={del} alt='' />
+						<span>Fermer</span>
+					</button>
 				</div>
 			</div>
 		</div>;
 
 	case 'delete':
-		if (Object.getOwnPropertyNames(props.selectedRowIds).length === 1) {
-			const id = Object.keys(props.selectedRowIds);
-			const el = props.files[id];
+		if (Object.getOwnPropertyNames(selectedRowIds).length === 1) {
+			const id = Object.keys(selectedRowIds);
+			const el = files[id];
 			return <div className='modal-back'>
 				<div className='small-modal'>
 					<h2>Supprimer</h2>
@@ -144,21 +171,21 @@ function Modal(props) {
 					<span> Cette action est irréversible, êtes-vous sur de continuer ? </span>
 
 					<div className='footer'>
-						<div className='small_fluent_btn' style={{ width: 100 }} onClick={() => props.setModal(null)}>
+						<button style={{ width: 100 }} onClick={() => setModal(null)}>
 							<img className='svg' src={del} alt='' />
 							<span>Fermer</span>
-						</div>
+						</button>
 
-						<div className='small_fluent_btn red' style={{ width: 130 }} onClick={() => props.remove(props.path, props.selectedRowIds)}>
-							<img className='svg' src={trash} alt='' />
+						<button className='red' style={{ width: 130 }} onClick={async () => await remove(path, selectedRowIds)}>
+							<img className='svg_white' src={trash} alt='' />
 							<span>Supprimer</span>
-						</div>
+						</button>
 					</div>
 				</div>
 			</div>;
 		}
-		if (Object.getOwnPropertyNames(props.selectedRowIds).length > 1) {
-			const tot = Object.keys(props.selectedRowIds).length;
+		if (Object.getOwnPropertyNames(selectedRowIds).length > 1) {
+			const tot = Object.keys(selectedRowIds).length;
 			return <div className='modal-back'>
 				<div className='mini-modal'>
 					<h2>Supprimer</h2>
@@ -168,15 +195,15 @@ function Modal(props) {
 					<span> Cette action est irréversible, êtes-vous sur de continuer ? </span>
 
 					<div className='footer'>
-						<div className='small_fluent_btn' style={{ width: 100 }} onClick={() => props.setModal(null)}>
+						<button style={{ width: 100 }} onClick={() => setModal(null)}>
 							<img className='svg' src={del} alt='' />
 							<span>Fermer</span>
-						</div>
+						</button>
 
-						<div className='small_fluent_btn red' style={{ width: 130 }} onClick={() => props.remove(props.path, props.selectedRowIds)}>
-							<img className='svg' src={trash} alt='' />
+						<button className='red' style={{ width: 130 }} onClick={() => remove(path, selectedRowIds)}>
+							<img className='svg_white' src={trash} alt='' />
 							<span>Supprimer</span>
-						</div>
+						</button>
 					</div>
 				</div>
 			</div>;
@@ -184,28 +211,26 @@ function Modal(props) {
 		break;
 
 	case 'rename':
-		if (Object.getOwnPropertyNames(props.selectedRowIds).length === 1) {
-			const id = Object.keys(props.selectedRowIds);
-			const el = props.files[id];
+		if (Object.getOwnPropertyNames(selectedRowIds).length === 1) {
+			const id = Object.keys(selectedRowIds);
+			const el = files[id];
 			return <div className='modal-back'>
 				<div className='mini-modal'>
 					<h2>Renommer </h2>
 					<div className='space'></div><br />
 
-					<div className='fluent_form'>
-						<input type='text' placeholder='Nom de votre fichier' autoFocus defaultValue={el.name} onChange={(e) => setTextInput(e.target.value)} />
-					</div>
+					<input type='text' placeholder='Nom de votre fichier' autoFocus defaultValue={el.name} onChange={(e) => setTextInput(e.target.value)} />
 
 					<div className='footer'>
-						<div className='small_fluent_btn' style={{ width: 100 }} onClick={() => props.setModal(null)}>
+						<button style={{ width: 100 }} onClick={() => setModal(null)}>
 							<img className='svg' src={del} alt='' />
 							<span>Fermer</span>
-						</div>
+						</button>
 
-						<div className='small_fluent_btn blue' style={{ width: 130 }} onClick={() => props.rename(props.path, el.type !== 'directory' ? (el.name + '.' + el.type) : el.name, el.type !== 'directory' ? (textInput + '.' + el.type) : textInput)}>
-							<img className='svg' src={add_directory} alt='' />
+						<button className='blue' style={{ width: 130 }} onClick={() => rename(path, el.type !== 'directory' ? (el.name + '.' + el.type) : el.name, el.type !== 'directory' ? (textInput + '.' + el.type) : textInput)}>
+							<img className='svg_white' src={add_directory} alt='' />
 							<span>Renommer</span>
-						</div>
+						</button>
 					</div>
 				</div>
 			</div>;
@@ -222,12 +247,12 @@ function Modal(props) {
 				<div className='space'></div><br />
 
 				<div style={{ display: 'flex' }}>
-					<div className='large_btn' onClick={() => props.setModal('upload_dir')}>
+					<div className='large_btn' onClick={() => setModal('upload_dir')}>
 						<img src='https://drive.hackernwar.com/view/type/folder.png' />
 						<br />
 							Dossier(s)
 					</div>
-					<div className='large_btn' onClick={() => props.setModal('upload_file')}>
+					<div className='large_btn' onClick={() => setModal('upload_file')}>
 						<img src='https://drive.hackernwar.com/view/type/file.png' />
 						<br />
 							Fichier(s)
@@ -235,39 +260,41 @@ function Modal(props) {
 				</div>
 
 				<div className='footer'>
-					<div className='small_fluent_btn' style={{ width: 100 }} onClick={() => props.setModal(null)}>
+					<button style={{ width: 100 }} onClick={() => setModal(null)}>
 						<img className='svg' src={del} alt='' />
 						<span>Fermer</span>
-					</div>
+					</button>
 				</div>
 			</div>
 		</div>;
 
-	case 'upload_dir':
+	case 'upload_file':
 		return <div className='modal-back'>
 			<div className='modal'>
-				<h2>Envoi de dossier</h2>
+				<h2>Envoi de fichier</h2>
 				<div className='space'></div><br />
+				<input type='file' onChange={(e) => handleFileChange(e)} multiple />
 
-				<input type='file' onChange={props.handleFileChange} multiple />
-
-
-				{props.filesInInput.map((file) => (
-					<p key={file.name}>
-						{file.name}
-					</p>
-				))}
+				<div className='scrollable' style={{ maxHeight: 'calc(100% - 170px)' }}>
+					{
+						filesInInput.map((file) => (
+							<p key={file.name}>
+								{file.name}
+							</p>
+						))
+					}
+				</div>
 
 				<div className='footer'>
-					<div className='small_fluent_btn' style={{ width: 100 }} onClick={() => props.setModal(null)}>
+					<button style={{ width: 100 }} onClick={() => setModal(null)}>
 						<img className='svg' src={del} alt='' />
 						<span>Fermer</span>
-					</div>
+					</button>
 
-					<div className='small_fluent_btn green' style={{ width: 130 }} onClick={() => props.upload()}>
-						<img className='svg' src={add_directory} alt='' />
+					<button className='green' style={{ width: 130 }} onClick={() => upload()}>
+						<img className='svg_white' src={add_directory} alt='' />
 						<span>Envoyer</span>
-					</div>
+					</button>
 				</div>
 			</div>
 		</div>;

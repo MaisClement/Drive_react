@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React from 'react';
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
 import { useTable, useSortBy, useRowSelect } from 'react-table';
@@ -13,11 +14,7 @@ const IndeterminateCheckbox = React.forwardRef(
 			resolvedRef.current.indeterminate = indeterminate;
 		}, [resolvedRef, indeterminate]);
 
-		return (
-			<>
-				<input type='checkbox' ref={resolvedRef} {...rest} />
-			</>
-		);
+		return <input type='checkbox' ref={resolvedRef} {...rest} />;
 	}
 );
 
@@ -100,9 +97,9 @@ function Files_table({ files, setSelectedRowIds, onClickFiles }) {
 		<table {...getTableProps()}>
 			<thead>
 				{headerGroups.map(headerGroup => (
-					<tr {...headerGroup.getHeaderGroupProps()}>
+					<tr key={headerGroup} {...headerGroup.getHeaderGroupProps()}>
 						{headerGroup.headers.map(column => (
-							<th {...column.getHeaderProps(column.getSortByToggleProps())}>
+							<th key={column} {...column.getHeaderProps(column.getSortByToggleProps())}>
 								{column.render('Header')}
 								<span>
 									{column.isSorted
@@ -120,11 +117,12 @@ function Files_table({ files, setSelectedRowIds, onClickFiles }) {
 				{rows.map(row => {
 					prepareRow(row);
 					return (
-						<tr className={row.isSelected ? 'selected' : null} {...row.getRowProps()}>
+						<tr  key={row} className={row.isSelected ? 'selected' : null} {...row.getRowProps()}>
 							{row.cells.map(cell => {
 
 								return (
 									<td
+										key={cell}
 										onClick={cell.column.id === 'selection' ? () => { } : () => { onClickFiles(row); }}
 										{...cell.getCellProps()}
 									>

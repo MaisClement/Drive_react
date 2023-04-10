@@ -3,9 +3,6 @@ import SplitPane, { Pane } from 'split-pane-react';
 
 import ExplorerPane from './Explorer_pane';
 import ExplorerBody from './Explorer_body';
-import 'split-pane-react/esm/themes/default.css';
-import './css/App.css';
-import './css/Header.css';
 
 function Explorer(props) {
 	return (
@@ -37,6 +34,7 @@ function Explorer(props) {
 					onClickFiles={props.onClickFiles}
 					updateFiles={props.updateFiles}
 					download={props.download}
+					removing={props.removing}
 				/>
 			</SplitPane>
 		</div>
