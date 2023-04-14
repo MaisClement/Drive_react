@@ -35,7 +35,7 @@ function TreeItem({ item, index, path, updateTreeItem }) {
 
 	function getChild(name) {
 		setIsLoading(true);
-		const url = 'https://drive.hackernwar.com/get_directory.php?p=' + encodeURIComponent(name);
+		const url = 'https://drive.hackernwar.com/get_directory?p=' + encodeURIComponent(name);
 		fetch(url, {
 			method: 'get'
 		})

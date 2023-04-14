@@ -7,6 +7,9 @@ import del from './img/delete.svg';
 import add_directory from './img/add-directory.svg';
 import trash from './img/trash.svg';
 
+import file from './img/file.png';
+import folder from './img/directory.png';
+
 function Modal({ modal, alert, storage, newDirectory, path, remove, removing, files, rename, upload, selectedRowIds, handleFileChange, handleDirChange, filesInInput, setModal }) {
 	const [cookies, setCookie] = useCookies(['show_ext']);
 	const [textInput, setTextInput] = useState('');
@@ -247,11 +250,11 @@ function Modal({ modal, alert, storage, newDirectory, path, remove, removing, fi
 				<div className='space'></div><br />
 
 				<button className='left' onClick={() => setModal('upload_dir')}>
-					<img src='https://drive.hackernwar.com/view/type/folder.png' />
+					<img src={folder} />
 					<span>Dossier(s)</span>
 				</button>
 				<button className='left' onClick={() => setModal('upload_file')}>
-					<img src='https://drive.hackernwar.com/view/type/file.png' />
+					<img src={file} />
 					<span>Fichier(s)</span>
 				</button>
 

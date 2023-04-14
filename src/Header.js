@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import del from './img/delete.svg';
+import logo from './img/logo.png';
 
 // #005ba1
 
@@ -10,9 +11,9 @@ function Header({ path, isViewMode, setViewMode, uploading, uploadName, uploadPe
 	if (uploading === true) {
 		return <>
 			<div className='upload_header'>
-				<div>
+				<div className='center'>
 					<Link to={'./'}>
-						<img src='https://drive.hackernwar.com/view/img/ftp.png' alt='Logo' />
+						<img src={logo} alt='Logo' />
 					</Link>
 					Envoi de {uploadName}...
 				</div>
@@ -44,7 +45,7 @@ function Header({ path, isViewMode, setViewMode, uploading, uploadName, uploadPe
 			width: '100px',
 		}}>
 			<Link to={'./'}>
-				<img src='https://drive.hackernwar.com/view/img/ftp.png' alt='Logo' />
+				<img src={logo} alt='Logo' />
 			</Link>
 			<span className='title'>Drive</span>
 		</div>

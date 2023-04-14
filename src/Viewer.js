@@ -46,13 +46,13 @@ function Viewer(props) {
 		{
 			viewerTypes.includes(file.type) && <img
 				className='img'
-				src={`${base_url}get_content.php?p=${encodeURIComponent(`${file.path}/${file.name}.${file.type}`)}`}
+				src={`${base_url}get_content?p=${encodeURIComponent(`${file.path}/${file.name}.${file.type}`)}`}
 			/>
 		}
 		{
 			// eslint-disable-next-line react/no-unknown-property
 			videoTypes.includes(file.type) && <video key={file.name} id='player' playsinline controls className='img'>
-				<source src={`${base_url}get_video.php?p=${encodeURIComponent(`${file.path}/${file.name}.${file.type}`)}`} type='video/mp4' />
+				<source src={`${base_url}get_video?p=${encodeURIComponent(`${file.path}/${file.name}.${file.type}`)}`} type='video/mp4' />
 			</video>
 		}
 		{

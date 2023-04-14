@@ -52,7 +52,7 @@ function App() {
 	}, []);
 
 	function getFiles(path) {
-		const url = base_url + 'get_files.php?p=' + encodeURIComponent(path);
+		const url = base_url + 'get_files?p=' + encodeURIComponent(path);
 		setIsLoading(true);
 		fetch(url, {
 			method: 'get'
@@ -95,7 +95,7 @@ function App() {
 		navigate(p);
 	}
 	function getDirectory(path, id = 0) {
-		const url = base_url + 'get_directory.php?p=' + encodeURIComponent('/');
+		const url = base_url + 'get_directory?p=' + encodeURIComponent('/');
 		fetch(url, {
 			method: 'get'
 		})
@@ -114,7 +114,7 @@ function App() {
 		if (name.substring(0, 1) !== '/') {
 			name = `/${name}`;
 		}
-		const url = base_url + 'new_directory.php?p=' + encodeURIComponent(path) + '&name=' + encodeURIComponent(name);
+		const url = base_url + 'new_directory?p=' + encodeURIComponent(path) + '&name=' + encodeURIComponent(name);
 		fetch(url, {
 			method: 'get'
 		})
@@ -140,7 +140,7 @@ function App() {
 			});
 	}
 	function getStorageInfo() {
-		const url = base_url + 'get_storage_info.php';
+		const url = base_url + 'get_storage_info';
 		fetch(url, {
 			method: 'get'
 		})
@@ -191,7 +191,7 @@ function App() {
 		}
 	}
 	function rename(path, old_name, new_name) {
-		const url = base_url + 'rename.php?p=' + encodeURIComponent(path) + '&old=' + encodeURIComponent(old_name) + '&new=' + encodeURIComponent(new_name);
+		const url = base_url + 'rename?p=' + encodeURIComponent(path) + '&old=' + encodeURIComponent(old_name) + '&new=' + encodeURIComponent(new_name);
 		fetch(url, {
 			method: 'get'
 		})
@@ -226,7 +226,7 @@ function App() {
 			const filename = files[i].type === 'directory'
 				? `${files[id].name}`
 				: `${files[id].name}.${files[id].type}`;
-			const url = base_url + 'remove.php?p=' + encodeURIComponent(currpath) + '&name=' + encodeURIComponent(filename);
+			const url = base_url + 'remove?p=' + encodeURIComponent(currpath) + '&name=' + encodeURIComponent(filename);
 
 			await fetch(url, {
 				method: 'get'
@@ -339,7 +339,7 @@ function App() {
 		if (file.webkitRelativePath && file.webkitRelativePath !== '') {
 			relPath += '/' + file.webkitRelativePath.replace(file.name, '');
 		}
-		const url = base_url + 'upload.php?p=' + encodeURIComponent(relPath) + '&name=' + encodeURIComponent(file.name);
+		const url = base_url + 'upload?p=' + encodeURIComponent(relPath) + '&name=' + encodeURIComponent(file.name);
 		const formData = new FormData();
 		formData.append('file', file);
 		await fetch(url, {
