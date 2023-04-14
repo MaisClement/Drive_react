@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import update from 'immutability-helper';
 
 import { videoTypes, viewerTypes } from './constants';
 
@@ -94,17 +95,20 @@ function App() {
 		navigate(p);
 	}
 	function getDirectory(path, id = 0) {
-		const url = base_url + 'get_directory.php?p=' + encodeURIComponent(path) + '&id=' + encodeURIComponent(id);
+		const url = base_url + 'get_directory.php?p=' + encodeURIComponent('/');
 		fetch(url, {
 			method: 'get'
 		})
 			.then(res => res.json())
 			.then(data => {
-				setTree(data.files);
+				setTree(data.folders);
 			})
 			.catch(() => {
 				// 
 			});
+	}
+	function updateTree(data) {
+		setTree(update(tree, data));
 	}
 	function newDirectory(path, name) {
 		if (name.substring(0, 1) !== '/') {
@@ -259,6 +263,17 @@ function App() {
 	}
 	function handleFileChange(e) {
 		const files = e.target.files;
+		console.log(files);
+
+		const list = [];
+		for (let i = 0; i < files.length; i++) {
+			list.push(files[i]);
+		}
+		setFilesInInput(list);
+	}
+	function handleDirChange(e) {
+		const files = e.target.files;
+		console.log(files);
 
 		const list = [];
 		for (let i = 0; i < files.length; i++) {
@@ -305,7 +320,7 @@ function App() {
 		setUploading('success');
 		setTimeout(() => {
 			setUploading(false);
-		}, 1000);
+		}, 5000);
 	}
 
 	function getRemainTime(remain) {
@@ -320,7 +335,11 @@ function App() {
 	}
 
 	async function postFile(file) {
-		const url = base_url + 'upload.php?p=' + encodeURIComponent(path) + '&name=' + encodeURIComponent(file.name);
+		let relPath = path;
+		if (file.webkitRelativePath && file.webkitRelativePath !== '') {
+			relPath += '/' + file.webkitRelativePath.replace(file.name, '');
+		}
+		const url = base_url + 'upload.php?p=' + encodeURIComponent(relPath) + '&name=' + encodeURIComponent(file.name);
 		const formData = new FormData();
 		formData.append('file', file);
 		await fetch(url, {
@@ -390,6 +409,7 @@ function App() {
 						path={path}
 						files={files}
 						tree={tree}
+						setTree={updateTree}
 						isLoading={isLoading}
 						sizes={sizes}
 						setSizes={setSizes}
@@ -426,6 +446,7 @@ function App() {
 				removing={removing}
 
 				handleFileChange={handleFileChange}
+				handleDirChange={handleDirChange}
 				filesInInput={filesInInput}
 				upload={upload}
 

@@ -15,6 +15,50 @@ tbody {
   display: inline-table;
 }
 
+header {
+  height: 50px;
+  padding: 5px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  color: #fff;
+  background-color: #820282;
+  z-index: 3;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header img {
+  height: 50px;
+}
+
+header span {
+  font-weight: 300;
+  font-size: 20px;
+  position: relative;
+  left: 15px;
+}
+
+header div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.path-link {
+  color: #868686;
+}
+
+.path-link:hover {
+  color: var(--text);
+  transition: color 500ms;
+}
+
+.path-space {
+  margin: 0 7px;
+}
+
 .upload_header {
   background-color: var(--blue-primary);
   height: 50px;
@@ -25,6 +69,10 @@ tbody {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.upload_header img {
+  height: 100%;
 }
 
 .upload_header>* {
@@ -52,6 +100,119 @@ tbody {
   left: 0;
   z-index: 3;
   transition: all .5s ease;
+}
+
+.explorer {
+  height: 100vh;
+}
+
+.explorer .pane {
+  height: calc(100vh - 70px);
+  display: flex;
+  flex-direction: column;
+  background: var(--el-back-secondary);
+  border-right: 2px solid #4b4b4b;
+  padding-top: 10px;
+}
+
+
+.explorer .pane button:hover {
+  background-color: var(--el-back-hover);
+  border: 2px solid var(--border-color);
+}
+
+.explorer .pane button:active {
+  margin-top: 1px;
+  margin-bottom: 0px;
+}
+
+.explorer .pane .footer {
+  margin-top: auto;
+  border-top: 2px solid #4b4b4b;
+}
+
+hr {
+  margin: 0;
+  border-bottom: 2px solid var(--secondary);
+}
+
+.options {
+  margin: 10px;
+  margin-right: 0px;
+}
+
+.nav {
+  display: flex;
+}
+
+
+
+.files {
+  padding: 20px;
+}
+
+.files img {
+  width: 25px;
+}
+
+.files th {
+  text-align: left;
+}
+
+/* --- Loader --- */
+
+.loader-4 {
+  --color: #820282;
+}
+
+.loader-4 {
+  --size-mid: 6vmin;
+  --size-dot: 1.5vmin;
+  --size-bar: 1vmin;
+  --size-square: 10px;
+  position: relative;
+  width: 100%;
+  display: block;
+}
+
+.loader-4::before,
+.loader-4::after {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+}
+
+.loader-4::before {
+  height: var(--size-bar);
+  width: 100%;
+  background-color: var(--color);
+  animation: loader-4 2s cubic-bezier(0, 0, 0.03, 0.9) infinite;
+}
+
+@keyframes loader-4 {
+
+  0%,
+  44%,
+  88.1%,
+  100% {
+    transform-origin: left;
+  }
+
+  0%,
+  100%,
+  88% {
+    transform: scaleX(0);
+  }
+
+  44.1%,
+  88% {
+    transform-origin: right;
+  }
+
+  33%,
+  44% {
+    transform: scaleX(1);
+  }
 }
 
 /* --- Path --- */
@@ -88,6 +249,12 @@ tbody {
 
 /* --- Tree Node --- */
 
+.tree {
+  max-height: calc(100vh - 160px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .tree-node {
   cursor: pointer;
   border: 2px solid var(--transparent);
@@ -114,12 +281,42 @@ tbody {
   margin: 0 5px;
 }
 
+.tree-node.current {
+  background-color: var(--select-hover);
+  color: var(--text);
+}
+
+.tree-node.current:hover {
+  background-color: var(--select-hover2);
+}
+
+.tree-arrow {
+  min-width: 16px;
+}
+
+.tree-node .name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+  width: 100%;
+}
+
 .tree-arrow {
   transition: all 200ms;
 }
 
-.tree-leaf-list-item {
-  padding-left: 15px;
+.tree-link {
+  display: block;
+  width: 100%;
+}
+
+.tree-child {
+  padding-left: 20px;
+}
+
+.tree-nochild {
+  padding-left: 16px;
 }
 
 /* --- Files --- */

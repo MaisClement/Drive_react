@@ -11,6 +11,9 @@ function Header({ path, isViewMode, setViewMode, uploading, uploadName, uploadPe
 		return <>
 			<div className='upload_header'>
 				<div>
+					<Link to={'./'}>
+						<img src='https://drive.hackernwar.com/view/img/ftp.png' alt='Logo' />
+					</Link>
 					Envoi de {uploadName}...
 				</div>
 				<div className='right'>
@@ -36,7 +39,7 @@ function Header({ path, isViewMode, setViewMode, uploading, uploadName, uploadPe
 		</>;
 	}
 
-	return <header style={{backgroundColor: isViewMode &&'#4f474e'}}>
+	return <header style={{ backgroundColor: isViewMode && '#4f474e' }}>
 		<div style={{
 			width: '100px',
 		}}>

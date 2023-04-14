@@ -5,6 +5,7 @@ import opened_directory from './img/opened-directory.svg';
 import trash from './img/trash_red.svg';
 import edit_file from './img/edit-file.svg';
 import download from './img/download.svg';
+// eslint-disable-next-line no-unused-vars
 import drag_and_drop from './img/drag-and-drop.svg';
 
 function removeButton(props, show) {
@@ -53,24 +54,29 @@ function Button(props) {
 				<img className='svg' src={download} alt='' />
 				<span>Télécharger</span>
 			</button>
-			<button style={{ width: 130 }}>
-				<img className='svg' src={drag_and_drop} alt='' />
-				<span>Déplacer</span>
-			</button>
+			{
+				/*
+				<button style={{ width: 130 }}>
+					<img className='svg' src={drag_and_drop} alt='' />
+					<span>Déplacer</span>
+				</button>
+				*/
+			}
 			<button style={{ width: 130 }} onClick={() => props.setModal('rename')}>
 				<img className='svg' src={edit_file} alt='' />
 				<span>Renommer</span>
 			</button>
 			<button key={'delete'} style={{ width: 130 }} onClick={() => props.setModal('delete')}>
-			<img src={trash} alt='' />
-			<span>Supprimer</span>
-		</button>
+				<img src={trash} alt='' />
+				<span>Supprimer</span>
+			</button>
 
 		</>;
 	} else if (Object.getOwnPropertyNames(props.selectedRowIds).length > 1) {
 		return <>
 			{space}
-			<button style={{ width: 130 }}>
+			{
+				/*<button style={{ width: 130 }}>
 				<img className='svg' src={download} alt='' />
 				<span>Télécharger</span>
 			</button>
@@ -78,6 +84,8 @@ function Button(props) {
 				<img className='svg' src={drag_and_drop} alt='' />
 				<span>Déplacer</span>
 			</button>
+				*/
+			}
 			{removeButton(props, true)}
 		</>;
 	} else {

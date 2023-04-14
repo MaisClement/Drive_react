@@ -7,7 +7,7 @@ import del from './img/delete.svg';
 import add_directory from './img/add-directory.svg';
 import trash from './img/trash.svg';
 
-function Modal({ modal, alert, storage, newDirectory, path, remove, removing, files, rename, upload, selectedRowIds, handleFileChange, filesInInput, setModal }) {
+function Modal({ modal, alert, storage, newDirectory, path, remove, removing, files, rename, upload, selectedRowIds, handleFileChange, handleDirChange, filesInInput, setModal }) {
 	const [cookies, setCookie] = useCookies(['show_ext']);
 	const [textInput, setTextInput] = useState('');
 
@@ -242,22 +242,18 @@ function Modal({ modal, alert, storage, newDirectory, path, remove, removing, fi
 
 	case 'upload':
 		return <div className='modal-back'>
-			<div className='small-modal'>
+			<div className='mini-modal'>
 				<h2>Que voulez vous envoyez ? </h2>
 				<div className='space'></div><br />
 
-				<div style={{ display: 'flex' }}>
-					<div className='large_btn' onClick={() => setModal('upload_dir')}>
-						<img src='https://drive.hackernwar.com/view/type/folder.png' />
-						<br />
-							Dossier(s)
-					</div>
-					<div className='large_btn' onClick={() => setModal('upload_file')}>
-						<img src='https://drive.hackernwar.com/view/type/file.png' />
-						<br />
-							Fichier(s)
-					</div>
-				</div>
+				<button className='left' onClick={() => setModal('upload_dir')}>
+					<img src='https://drive.hackernwar.com/view/type/folder.png' />
+					<span>Dossier(s)</span>
+				</button>
+				<button className='left' onClick={() => setModal('upload_file')}>
+					<img src='https://drive.hackernwar.com/view/type/file.png' />
+					<span>Fichier(s)</span>
+				</button>
 
 				<div className='footer'>
 					<button style={{ width: 100 }} onClick={() => setModal(null)}>
@@ -271,9 +267,41 @@ function Modal({ modal, alert, storage, newDirectory, path, remove, removing, fi
 	case 'upload_file':
 		return <div className='modal-back'>
 			<div className='modal'>
-				<h2>Envoi de fichier</h2>
+				<h2>Envoi de fichier(s)</h2>
 				<div className='space'></div><br />
-				<input type='file' onChange={(e) => handleFileChange(e)} multiple />
+				<input type='file' onChange={(e) => handleFileChange(e)} multiple/>
+
+				<div className='scrollable' style={{ maxHeight: 'calc(100% - 170px)' }}>
+					{
+						filesInInput.map((file) => (
+							<p key={file.name}>
+								{file.name}
+							</p>
+						))
+					}
+				</div>
+
+				<div className='footer'>
+					<button style={{ width: 100 }} onClick={() => setModal(null)}>
+						<img className='svg' src={del} alt='' />
+						<span>Fermer</span>
+					</button>
+
+					<button className='green' style={{ width: 130 }} onClick={() => upload()}>
+						<img className='svg_white' src={add_directory} alt='' />
+						<span>Envoyer</span>
+					</button>
+				</div>
+			</div>
+		</div>;
+
+	case 'upload_dir':
+		return <div className='modal-back'>
+			<div className='modal'>
+				<h2>Envoi de dossier(s)</h2>
+				<div className='space'></div><br />
+				{/* eslint-disable-next-line react/no-unknown-property, jsx-quotes */}
+				<input type='file' onChange={(e) => handleDirChange(e)} multiple  directory="" webkitdirectory=""  />
 
 				<div className='scrollable' style={{ maxHeight: 'calc(100% - 170px)' }}>
 					{

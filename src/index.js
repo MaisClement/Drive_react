@@ -12,8 +12,6 @@ import './css/form.css';
 import './css/color.css';
 import './css/plyr.css';
 import './css/Viewer.css';
-import './css/Explorer.css';
-import './css/Header.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

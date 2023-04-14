@@ -15,6 +15,7 @@ function Explorer(props) {
 				<Pane minSize={50} maxSize='50%'>
 					<ExplorerPane
 						tree={props.tree}
+						setTree={props.setTree}
 						modal={props.modal}
 						setModal={props.setModal}
 
