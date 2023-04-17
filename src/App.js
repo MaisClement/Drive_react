@@ -223,7 +223,7 @@ function App() {
 		let i = 0;
 
 		for (const id of ids) {
-			const filename = files[i].type === 'directory'
+			const filename = files[id].type === 'directory'
 				? `${files[id].name}`
 				: `${files[id].name}.${files[id].type}`;
 			const url = base_url + 'remove?p=' + encodeURIComponent(currpath) + '&name=' + encodeURIComponent(filename);
@@ -358,6 +358,10 @@ function App() {
 				} else if (res.status !== 200) {
 					setAlert({ title: 'Upload impossible', message: 'Une erreur s\'est produite.' });
 					setModal('alert');
+					setUploading('error');
+					setTimeout(() => {
+						setUploading(false);
+					}, 5000);
 					throw 'exit';
 				}
 			}
@@ -376,12 +380,12 @@ function App() {
 		if (viewerTypes.includes(type) || videoTypes.includes(type)) {
 			setViewMode(true);
 		} else {
-			var url = `https://drive.hackernwar.com/?ctrl=download&p=${path}/${name}.${type}`;
+			var url = `https://drive.hackernwar.com/download?p=${path}/${name}.${type}`;
 			window.history.replaceState(`${name}.${type}`, '', url);
 		}
 	}
 	function downloadFile(path, name) {
-		var url = `https://drive.hackernwar.com/?ctrl=download&p=${path}/${name}`;
+		var url = `https://drive.hackernwar.com/download?p=${path}/${name}`;
 		window.open(url);
 	}
 
